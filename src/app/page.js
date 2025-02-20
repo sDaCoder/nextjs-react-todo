@@ -19,17 +19,32 @@ export default function Home() {
   // ];
 
   const [todos, setTodos] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [todoEdit, setTodoEdit] = useState({});
 
   return (
     <>
       <h1>Rendered: {ref.current}</h1>
       <div className="flex flex-col py-6 gap-8 items-center justify-center">
 
-        <TodoForm todos={todos} setTodos={setTodos} />
+        <TodoForm 
+          todos={todos} 
+          setTodos={setTodos} 
+          editing={editing} 
+          setEditing={setEditing}
+          todoEdit={todoEdit}/>
 
         <div className="flex items-center justify-center flex-wrap gap-4">
           {todos.map((todo, index) => (
-            <TodoCard key={index} item={todo} setTodos={setTodos} />
+            <TodoCard 
+              key={index} 
+              item={todo} 
+              setTodos={setTodos} 
+              editing={editing} 
+              setEditing={setEditing} 
+              todoEdit={todoEdit}
+              setTodoEdit={setTodoEdit}
+            />
           ))}
         </div>
 
