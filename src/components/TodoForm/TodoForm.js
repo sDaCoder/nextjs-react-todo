@@ -1,11 +1,14 @@
 "use client"
 import { useForm } from "react-hook-form"
+import { useEffect } from "react"
+import { Button } from "@/components/ui/button"
 
 const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
     const {
         register,
         handleSubmit,
         reset,
+        setFocus,
         formState: { errors },
     } = useForm()
 
@@ -22,6 +25,21 @@ const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
         reset();
     }
 
+    useEffect(() => {
+        if (editing) {
+            setFocus("todo");
+            setTimeout(() => {
+                const input = document.querySelector('input[name="todo"]');
+                if (input) {
+                  input.setSelectionRange(input.value.length, input.value.length); // ✅ Move cursor to end
+                }
+            }, 10); // Small delay to ensure input is focused first
+        } else {
+            document.activeElement.blur();
+        }
+    }, [editing, setFocus]);
+    
+
     return (
         <>
             <h1 className="text-slate-800 text-3xl font-bold">
@@ -32,11 +50,14 @@ const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
                     type="text"
                     defaultValue={editing ? todoEdit.todo : ""}
                     {...register("todo", { required: true })}
-                    className="text-slate-600 font-bold" placeholder="todo" />
+                    className="text-slate-600 font-bold" placeholder="todo"
+                    name="todo"
+                />
                 {errors.todo && <span className="text-red-500 font-bold">Your task must not be empty</span>}
-                <button type="submit" className="bg-slate-600 py-2 px-4 rounded text-white" >
+
+                <Button type="submit" className=" py-2 px-4 rounded" >
                     {editing ? "Edit Your Task" : "Add Your Task"}
-                </button>
+                </Button>
             </form>
         </>
     )
