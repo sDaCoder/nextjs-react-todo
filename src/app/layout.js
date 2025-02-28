@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { format } from 'date-fns'
+import TimeBar from "@/components/TimeBar/TimeBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,9 +23,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <h1 className='bg-primary text-primary-foreground font-bold py-2 text-center text-xl'>
-          {format(new Date(), "do MMMM, yyyy, eeee")}
-        </h1>
+        {/* <TimeBar /> */}
         {children}
       </body>
     </html>

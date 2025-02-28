@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="inline absolute top-0 bg-white py-1 p-4 rounded">Rendered: {ref.current}</h1>
+      {/* <h1 className="inline absolute top-0 bg-white py-1 p-4 rounded">Rendered: {ref.current}</h1> */}
 
       <HorizontalCalendar />
       <div className="flex flex-col py-6 gap-8 items-center justify-center">
