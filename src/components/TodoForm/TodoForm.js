@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form"
 import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { DialogClose, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
     const {
@@ -42,9 +43,12 @@ const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
 
     return (
         <>
-            <h1 className="text-slate-800 text-3xl font-bold">
-                {editing ? "Edit Your Task" : "Add Your Task"}
-            </h1>
+            <DialogHeader>
+                <DialogTitle className="text-slate-800 text-3xl font-bold">
+                    {editing ? "Edit Your Task" : "Add Your Task"}
+                </DialogTitle>
+            </DialogHeader>
+
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-center gap-2 px-10">
                 <input
                     type="text"
@@ -55,9 +59,11 @@ const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
                 />
                 {errors.todo && <span className="text-red-500 font-bold">Your task must not be empty</span>}
 
-                <Button type="submit" className=" py-2 px-4 rounded" >
-                    {editing ? "Edit Your Task" : "Add Your Task"}
-                </Button>
+                <DialogClose asChild>
+                    <Button type="submit" className=" py-2 px-4 rounded" >
+                        {editing ? "Edit Your Task" : "Add Your Task"}
+                    </Button>
+                </DialogClose>
             </form>
         </>
     )

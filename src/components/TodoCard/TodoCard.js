@@ -1,7 +1,7 @@
 "use client"
 import { useState } from 'react'
 
-const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit}) => {
+const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit, isOpen, setIsOpen}) => {
 
 
   const completeTodo = () => {
@@ -26,6 +26,7 @@ const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit}) 
   const handleEditing = () => {
     setEditing(!editing);
     setTodoEdit(item);
+    setIsOpen(!isOpen);
   }
     
   return (
