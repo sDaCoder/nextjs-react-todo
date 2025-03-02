@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react'
+import { toast } from "sonner"
 
 const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit, isOpen, setIsOpen}) => {
 
@@ -17,10 +17,23 @@ const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit, i
         }
       )
     );
+
+    if(!item.isDone) {
+      toast.success("Congratulations!",  {
+        title: `Congratulations! You have completed your task.`,
+        duration: 5000,
+        description: <h1 className="text-black font-semibold">{item.todo}</h1>,
+      })
+    }
   }
 
   const handleDeleteTodo = () => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== item.id));
+    toast.success("Event has been deleted",  {
+      title: `Your task has been deleted successfully`,
+      duration: 5000,
+      description: <h1 className="text-black font-semibold">{item.todo}</h1>,
+    })
   }
 
   const handleEditing = () => {

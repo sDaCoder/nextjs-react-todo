@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { DialogClose, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { toast } from "sonner"
 
 const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
     const {
@@ -24,6 +25,11 @@ const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
         }
         else setTodos([...todos, {todo: data.todo, isDone: false, addedAt: Date.now(), id: Date.now()}]);
         reset();
+        toast.success("Event has been created",  {
+            title: `Your task has been ${editing ? "updated" : "added"} successfully`,
+            duration: 5000,
+            description: <h1 className="text-black font-semibold">{data.todo}</h1>,
+        })
     }
 
     useEffect(() => {
@@ -39,7 +45,6 @@ const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
             document.activeElement.blur();
         }
     }, [editing, setFocus]);
-    
 
     return (
         <>
