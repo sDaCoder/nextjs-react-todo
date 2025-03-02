@@ -5,7 +5,13 @@ import { Button } from "@/components/ui/button"
 import { DialogClose, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { toast } from "sonner"
 
-const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
+const TodoForm = ({ todos, setTodos, editing, setEditing, todoEdit }) => {
+    const delay = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, 2000);
+    })
+
     const {
         register,
         handleSubmit,
@@ -15,21 +21,29 @@ const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
     } = useForm()
 
     const onSubmit = (data) => {
-        if(editing) {
+        if (editing) {
             setTodos((prevTodos) => (
-                prevTodos.map((todo) => 
+                prevTodos.map((todo) =>
                     todo.id === todoEdit.id ? { ...todo, todo: data.todo, editedAt: Date.now() } : todo
                 )
             ))
             setEditing(false);
         }
-        else setTodos([...todos, {todo: data.todo, isDone: false, addedAt: Date.now(), id: Date.now()}]);
+        else setTodos([...todos, { todo: data.todo, isDone: false, addedAt: Date.now(), id: Date.now() }]);
         reset();
-        toast.success("Event has been created",  {
-            title: `Your task has been ${editing ? "updated" : "added"} successfully`,
-            duration: 5000,
-            description: <h1 className="text-black font-semibold">{data.todo}</h1>,
-        })
+        toast.promise(delay, {
+            loading: `${editing ? "Updating" : "Adding"} Your Task`,
+            success: ("Event has been created", {
+                message: <h1 className="text-green-600 font-semibold">{`Your task has been ${editing ? "updated" : "added"} successfully`}</h1>,
+                duration: 4000,
+                description: <h1 className="text-black font-semibold">{data.todo}</h1>,
+            }),
+            error: ("Event has not been created", {
+                message: <h1 className="text-red-600 font-semibold">{`Your task has not been ${editing ? "updated" : "added"}. Try Again`}</h1>,
+                duration: 4000,
+                description: <h1 className="text-black font-semibold">{data.todo}</h1>,
+            }),
+        });
     }
 
     useEffect(() => {
@@ -38,7 +52,7 @@ const TodoForm = ({todos, setTodos, editing, setEditing, todoEdit}) => {
             setTimeout(() => {
                 const input = document.querySelector('input[name="todo"]');
                 if (input) {
-                  input.setSelectionRange(input.value.length, input.value.length); // ✅ Move cursor to end
+                    input.setSelectionRange(input.value.length, input.value.length); // ✅ Move cursor to end
                 }
             }, 10); // Small delay to ensure input is focused first
         } else {

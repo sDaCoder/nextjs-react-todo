@@ -2,7 +2,12 @@
 import { toast } from "sonner"
 
 const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit, isOpen, setIsOpen}) => {
-
+  
+  const delay = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve();
+    }, 2000);
+  })
 
   const completeTodo = () => {
     setTodos((prevTodos) => 
@@ -19,21 +24,35 @@ const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit, i
     );
 
     if(!item.isDone) {
-      toast.success("Congratulations!",  {
-        title: `Congratulations! You have completed your task.`,
-        duration: 5000,
-        description: <h1 className="text-black font-semibold">{item.todo}</h1>,
-      })
+      toast.promise(delay, {
+        loading: `Completing Your Task`,
+        success: ("Event completed", {
+            message: <h1 className="text-green-600 font-semibold">{`Congratulations! You've completed your task.`}</h1>,
+            duration: 4000,
+            description: <h1 className="text-black font-semibold">{item.todo}</h1>,
+        }),
+        error: ("Could not complete the action", {
+            message: <h1 className="text-red-600 font-semibold">{`Could not complete the action. Try Again`}</h1>,
+            duration: 4000,
+        }),
+      });
     }
   }
 
   const handleDeleteTodo = () => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== item.id));
-    toast.success("Event has been deleted",  {
-      title: `Your task has been deleted successfully`,
-      duration: 5000,
-      description: <h1 className="text-black font-semibold">{item.todo}</h1>,
-    })
+    toast.promise(delay, {
+      loading: `Deleting Your Task`,
+      success: ("Event completed", {
+          message: <h1 className="text-yellow-500 font-semibold">{`Your Task has been deleted successfully.`}</h1>,
+          duration: 4000,
+          description: <h1 className="text-black font-semibold">{item.todo}</h1>,
+      }),
+      error: ("Could not complete the action", {
+          message: <h1 className="text-red-600 font-semibold">{`Could not complete the action. Try Again`}</h1>,
+          duration: 4000,
+      }),
+    });
   }
 
   const handleEditing = () => {
