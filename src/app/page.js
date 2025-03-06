@@ -18,11 +18,11 @@ export default function Home() {
   const [editing, setEditing] = useState(false);
   const [todoEdit, setTodoEdit] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 500);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 768);
+      setIsSmallScreen(window.innerWidth < 500);
     };
     window.addEventListener("resize", handleResize);
     return () => {

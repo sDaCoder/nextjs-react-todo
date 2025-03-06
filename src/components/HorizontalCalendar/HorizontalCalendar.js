@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { addDays, format, isSameDay, startOfWeek } from "date-fns"
 import { useState } from "react"
 import TimeBar from "@/components/TimeBar/TimeBar"
+import { useSwipeable } from "react-swipeable"
 
 const HorizontalCalendar = ({isSmallScreen}) => {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -22,17 +23,26 @@ const HorizontalCalendar = ({isSmallScreen}) => {
     dates[index] = addDays(dates[index - 1], 1)
   }
 
+  const handlers = useSwipeable({
+    onSwipedLeft: handleNextWeek,
+    onSwipedRight: handlePreviousWeek,
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true
+  })
+
   return (
     <>
       <TimeBar currentDate={currentDate} />
-      <div className="shadow-lg">
+      <div {...handlers} className="shadow-lg">
 
         <div className="flex items-center justify-center md:p-4 p-2 ">
-          <Button onClick={handlePreviousWeek} variant="outline" className="shadow-md rounded-full">
-            <ChevronLeft />
-          </Button>
+          {!isSmallScreen &&
+            <Button onClick={handlePreviousWeek} variant="outline" className="shadow-md rounded-full">
+              <ChevronLeft />
+            </Button>
+          }
           
-          <div className="flex flex-wrap justify-center md:gap-6 gap-4 px-4">
+          <div className="flex flex-wrap justify-center md:gap-6 gap-2 px-3">
             {dates.map((date, index) =>(
               <div
                 key={index}
@@ -44,9 +54,11 @@ const HorizontalCalendar = ({isSmallScreen}) => {
             ))}
           </div>
 
-          <Button onClick={handleNextWeek} variant="outline" className="shadow-md rounded-full">
-            <ChevronRight />
-          </Button>
+          {!isSmallScreen &&
+            <Button onClick={handleNextWeek} variant="outline" className="shadow-md rounded-full">
+              <ChevronRight />
+            </Button>
+          }
         </div>
       </div>
     </>
