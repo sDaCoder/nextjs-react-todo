@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { CopyPlus } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer,DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { set } from "date-fns";
 
 export default function Home() {
   const ref = useRef(0);
@@ -18,17 +19,24 @@ export default function Home() {
   const [editing, setEditing] = useState(false);
   const [todoEdit, setTodoEdit] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 500);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+    setIsSmallScreen(window.innerWidth < 500);
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 500);
     };
+
+    // handleResize();
+
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+  if (!isClient) return null;
   console.log(isSmallScreen);
 
   return (
