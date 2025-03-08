@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
+import { Input } from "../ui/input"
 
 const TodoForm = ({ 
     todos, 
@@ -43,7 +44,7 @@ const TodoForm = ({
                 ))
                 setEditing(false);
             }
-            else setTodos([...todos, { todo: data.todo, isDone: false, addedAt: Date.now(), id: Date.now() }]);
+            else setTodos([...todos, { todo: data.todo, desc: data.desc, isDone: false, addedAt: Date.now(), id: Date.now() }]);
             reset();
             setIsLoading(false);
         }, 2000);
@@ -78,13 +79,20 @@ const TodoForm = ({
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-center gap-2 px-10">
-                <input
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-center gap-2 px-6 h-[25vh]">
+                <Input
                     type="text"
                     defaultValue={editing ? todoEdit.todo : ""}
                     {...register("todo", { required: true })}
-                    className="text-slate-600 font-bold" placeholder="todo"
+                    className="text-slate-600 font-bold" placeholder="Your Todo"
                     name="todo"
+                />
+                <Input
+                    type="text"
+                    defaultValue={editing ? todoEdit.desc : ""}
+                    {...register("desc")}
+                    className="text-slate-600 font-bold" placeholder="Your Todo Description(optional)"
+                    name="desc"
                 />
                 {errors.todo && <span className="text-red-500 font-bold">Your task must not be empty</span>}
 

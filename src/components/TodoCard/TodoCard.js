@@ -1,7 +1,18 @@
 "use client"
 import { toast } from "sonner"
+import { CircleCheckBig, FilePenLine, Trash2, CircleX } from "lucide-react"
+import { Card } from "../ui/card"
+import { format, startOfDay } from "date-fns"
 
-const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit, isOpen, setIsOpen}) => {
+const TodoCard = ({
+  item, 
+  setTodos, 
+  editing, 
+  setEditing, 
+  todoEdit, 
+  setTodoEdit, 
+  isOpen, 
+  setIsOpen}) => {
   
   const delay = async (dtime) => {
     await new Promise((resolve) => {
@@ -65,21 +76,35 @@ const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit, i
   }
     
   return (
-    <div id={item?.id} className="border flex flex-col gap-2 p-4 rounded shadow-md">
-      <span className={`text-slate-600 font-bold ${item.isDone ? "line-through" : ""}`}>
-        {item.todo}
-      </span>
-      <span className="text-slate-600 font-bold">
-        {new Date(item.addedAt).toLocaleTimeString()}
-        <span className='italic'>{item.editedAt ? ` (edited at ${new Date(item.editedAt).toLocaleTimeString()})` : ""}</span>
-        <span className='italic'>{item.completedAt ? ` (completed at ${new Date(item.completedAt).toLocaleTimeString()})` : ""}</span>
-      </span>
-      <div className='flex gap-2'>
-          <button onClick={() => completeTodo()} className='bg-slate-800 text-slate-200 px-4 py-2 rounded'>Complete Task</button>
-          <button onClick={() => handleEditing()} className='bg-slate-800 text-slate-200 px-4 py-2 rounded'>Edit Task</button>
-          <button onClick={() => handleDeleteTodo()} className='bg-slate-800 text-slate-200 px-4 py-2 rounded'>Delete Task</button>
+    <Card>
+      <div id={item?.id} className="flex justify-between gap-6 p-4 md:w-[30vw] w-[90vw] min-h-[20vh] rounded-lg shadow-sm">
+
+        <div className="flex flex-col gap-y-4 justify-between">
+          <div className="flex flex-col">
+            <h1 className={`text-lg text-wrap font-extrabold ${item.isDone ? "line-through" : ""}`}>
+              {item.todo}
+            </h1>
+            <p className="text-sm">
+              {item.desc}
+            </p>
+          </div>
+          <span className="font-bold flex flex-col">
+            {`Deadline: ${format(startOfDay(new Date(item.addedAt)), "dd-MM-yyyy")}`}
+            {/* <span className='italic'>{item.editedAt ? ` (edited at ${new Date(item.editedAt).toLocaleTimeString()})` : ""}</span>
+            <span className='italic'>{item.completedAt ? ` (completed at ${new Date(item.completedAt).toLocaleTimeString()})` : ""}</span> */}
+          </span>
+        </div>
+
+        <div className='flex flex-col items-center gap-3'>
+          {!item.isDone ? 
+            <CircleCheckBig size={24} strokeWidth={2.5} onClick={() => completeTodo()} className="cursor-pointer"/> :
+            <CircleX size={24} strokeWidth={2.5} onClick={() => completeTodo()} className="cursor-pointer"/>
+          }
+          <FilePenLine size={24} strokeWidth={2.5} onClick={() => handleEditing()} className="cursor-pointer"/>
+          <Trash2 size={24} strokeWidth={2.5} onClick={() => handleDeleteTodo()} className="cursor-pointer"/>
+        </div>
       </div>
-    </div>
+    </Card>
   )
 }
 
