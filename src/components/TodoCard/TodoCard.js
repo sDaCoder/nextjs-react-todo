@@ -3,13 +3,15 @@ import { toast } from "sonner"
 
 const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit, isOpen, setIsOpen}) => {
   
-  const delay = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve();
-    }, 2000);
-  })
+  const delay = async (dtime) => {
+    await new Promise((resolve) => {
+     setTimeout(() => {
+         resolve();
+     }, dtime);
+   })
+  }
 
-  const completeTodo = () => {
+  const completeTodo = async () => {
     setTodos((prevTodos) => 
       prevTodos.map((todo) => 
         {
@@ -23,8 +25,9 @@ const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit, i
       )
     );
 
+    // Displaying the toast when the task is not completed
     if(!item.isDone) {
-      toast.promise(delay, {
+      toast.promise(delay(0), {
         loading: `Completing Your Task`,
         success: ("Event completed", {
             message: <h1 className="text-green-600 font-semibold">{`Congratulations! You've completed your task.`}</h1>,
@@ -41,7 +44,7 @@ const TodoCard = ({item, setTodos, editing, setEditing, todoEdit, setTodoEdit, i
 
   const handleDeleteTodo = () => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== item.id));
-    toast.promise(delay, {
+    toast.promise(delay(0), {
       loading: `Deleting Your Task`,
       success: ("Event completed", {
           message: <h1 className="text-yellow-500 font-semibold">{`Your Task has been deleted successfully.`}</h1>,

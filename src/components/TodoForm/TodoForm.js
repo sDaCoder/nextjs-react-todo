@@ -4,12 +4,24 @@ import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 
-const TodoForm = ({ todos, setTodos, editing, setEditing, todoEdit, setIsOpen, isSmallScreen }) => {
-    const delay = new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve();
-        }, 2000);
-    })
+const TodoForm = ({ 
+    todos, 
+    setTodos, 
+    editing, 
+    setEditing, 
+    todoEdit, 
+    setIsOpen, 
+    isSmallScreen,
+    isLoading,
+    setIsLoading }) => {
+
+    const delay = async (dtime) => {
+        await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve();
+            }, dtime);
+       })
+    }
 
     const {
         register,
@@ -20,17 +32,22 @@ const TodoForm = ({ todos, setTodos, editing, setEditing, todoEdit, setIsOpen, i
     } = useForm()
 
     const onSubmit = (data) => {
-        if (editing) {
-            setTodos((prevTodos) => (
-                prevTodos.map((todo) =>
-                    todo.id === todoEdit.id ? { ...todo, todo: data.todo, editedAt: Date.now() } : todo
-                )
-            ))
-            setEditing(false);
-        }
-        else setTodos([...todos, { todo: data.todo, isDone: false, addedAt: Date.now(), id: Date.now() }]);
-        reset();
-        toast.promise(delay, {
+        setIsLoading(true);
+
+        setTimeout(() => {
+            if (editing) {
+                setTodos((prevTodos) => (
+                    prevTodos.map((todo) =>
+                        todo.id === todoEdit.id ? { ...todo, todo: data.todo, editedAt: Date.now() } : todo
+                    )
+                ))
+                setEditing(false);
+            }
+            else setTodos([...todos, { todo: data.todo, isDone: false, addedAt: Date.now(), id: Date.now() }]);
+            reset();
+            setIsLoading(false);
+        }, 2000);
+        toast.promise(delay(2000), {
             loading: `${editing ? "Updating" : "Adding"} Your Task`,
             success: ("Event has been created", {
                 message: <h1 className="text-green-600 font-semibold">{`Your task has been ${editing ? "updated" : "added"} successfully`}</h1>,

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { CopyPlus } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer,DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
-import { set } from "date-fns";
+import Loading from "@/components/Loading/Loading";
 
 export default function Home() {
   const ref = useRef(0);
@@ -21,6 +21,7 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -29,15 +30,12 @@ export default function Home() {
       setIsSmallScreen(window.innerWidth < 500);
     };
 
-    // handleResize();
-
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
   if (!isClient) return null;
-  console.log(isSmallScreen);
 
   return (
     <>
@@ -48,7 +46,8 @@ export default function Home() {
         
 
         <div className="flex items-center justify-center flex-wrap gap-4">
-          {todos?.map((todo, index) => (
+          {isLoading ? <Loading /> : 
+            todos?.map((todo, index) => (
               <TodoCard
                 key={index}
                 item={todo}
@@ -60,20 +59,21 @@ export default function Home() {
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
               />
-          ))}
+            ))
+          }
         </div>
 
         <div className="flex flex-col items-center gap-6 py-4">
 
-          {/* If Todos don't exist, show the image */}
-          {!todos.length && (
+          {/* If Todos don't exist and the page is not loading, show the image */}
+          {!todos.length && !isLoading && (
             <img src="/todo-man2.png" className="text-slate-500 w-1/2" />
           )}
 
           <Button
             onClick={() => setIsOpen(true)}
             className="font-bold p-6">
-            { todos.length ? `Add Another Task` : `Stop Thinking, Start Adding Your Tasks`}
+            { todos.length || isLoading ? `Add Another Task` : `Stop Thinking, Start Adding Your Tasks`}
             <span><CopyPlus /></span>
           </Button>
 
@@ -83,8 +83,10 @@ export default function Home() {
               <DrawerContent>
 
                 <DrawerHeader>
-                  <DrawerTitle className="text-slate-800 text-3xl font-bold">
-                    {editing ? "Edit Your Task" : "Add Your Task"}
+                  <DrawerTitle>
+                    <p className="text-slate-800 text-3xl font-bold">
+                      {editing ? "Edit Your Task" : "Add Your Task"}
+                    </p>
                   </DrawerTitle>
                 </DrawerHeader>
                 
@@ -96,6 +98,8 @@ export default function Home() {
                   todoEdit={todoEdit}
                   setIsOpen={setIsOpen}
                   isSmallScreen={isSmallScreen}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
                 />
               </DrawerContent>
             </Drawer>
@@ -105,8 +109,10 @@ export default function Home() {
               <DialogContent>
 
                 <DialogHeader>
-                  <DialogTitle className="text-slate-800 text-3xl font-bold">
+                  <DialogTitle>
+                    <p className="text-slate-800 text-3xl font-bold">
                       {editing ? "Edit Your Task" : "Add Your Task"}
+                    </p>
                   </DialogTitle>
                 </DialogHeader>
 
@@ -118,6 +124,8 @@ export default function Home() {
                   todoEdit={todoEdit}
                   setIsOpen={setIsOpen}
                   isSmallScreen={isSmallScreen}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
                 />
               </DialogContent>
               
@@ -130,7 +138,7 @@ export default function Home() {
             className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
             aria-hidden="true"
             onClick={() => setIsOpen(false)}
-          />
+          ></div>
         )}
       </div>
     </>
