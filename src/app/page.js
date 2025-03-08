@@ -8,6 +8,7 @@ import { CopyPlus } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer,DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import Loading from "@/components/Loading/Loading";
+import { Loader2 } from "lucide-react";
 
 export default function Home() {
   const ref = useRef(0);
@@ -72,9 +73,19 @@ export default function Home() {
 
           <Button
             onClick={() => setIsOpen(true)}
-            className="font-bold p-6">
-            { todos.length || isLoading ? `Add Another Task` : `Stop Thinking, Start Adding Your Tasks`}
-            <span><CopyPlus /></span>
+            className="font-bold p-6"
+            disabled={isLoading}
+          >
+            {isLoading ? 
+              <>
+                Loading<span><Loader2 className="animate-spin" strokeWidth={2.5} /></span> 
+              </>
+              :
+              <>
+                {todos.length ? `Add Another Task` : `Stop Thinking, Start Adding Your Tasks`}
+                <span><CopyPlus /></span>
+              </>
+            }
           </Button>
 
           {isSmallScreen ? (
