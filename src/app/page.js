@@ -4,11 +4,10 @@ import HorizontalCalendar from "@/components/HorizontalCalendar/HorizontalCalend
 import TodoForm from "@/components/TodoForm/TodoForm";
 import TodoCard from "@/components/TodoCard/TodoCard";
 import { Button } from "@/components/ui/button";
-import { CopyPlus } from "lucide-react";
+import { CopyPlus, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer,DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import Loading from "@/components/Loading/Loading";
-import { Loader2 } from "lucide-react";
 
 export default function Home() {
   const ref = useRef(0);
