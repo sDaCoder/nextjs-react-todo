@@ -8,6 +8,7 @@ import { CopyPlus, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer,DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import Loading from "@/components/Loading/Loading";
+import { HoverCard } from "@/components/ui/hover-card";
 
 export default function Home() {
   const ref = useRef(0);
@@ -48,17 +49,18 @@ export default function Home() {
         <div className="flex items-center justify-center flex-wrap gap-4">
           {isLoading ? <Loading /> : 
             todos?.map((todo, index) => (
-              <TodoCard
-                key={index}
-                item={todo}
-                setTodos={setTodos}
-                editing={editing}
-                setEditing={setEditing}
-                todoEdit={todoEdit}
-                setTodoEdit={setTodoEdit}
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-              />
+              <HoverCard key={index}>
+                <TodoCard
+                  item={todo}
+                  setTodos={setTodos}
+                  editing={editing}
+                  setEditing={setEditing}
+                  todoEdit={todoEdit}
+                  setTodoEdit={setTodoEdit}
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                />
+              </HoverCard>
             ))
           }
         </div>
@@ -71,7 +73,7 @@ export default function Home() {
           )}
 
           <Button
-            onClick={() => setIsOpen(true)}
+            onClick={() => {setIsOpen(true); setEditing(false);}}
             className="font-bold p-6"
             disabled={isLoading}
           >

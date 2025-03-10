@@ -81,7 +81,7 @@ const TodoForm = ({
         }
     }, [editing, setFocus]);
 
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(editing ? todoEdit.deadline : new Date());
 
     return (
         <>
