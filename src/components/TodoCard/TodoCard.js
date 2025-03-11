@@ -122,8 +122,12 @@ const TodoCard = ({
           <h1 className="text-primary font-bold">{item.todo}</h1>
           <div className="flex flex-col gap-[2px] mt-4">
             <p className="text-primary text-sm">Added at: {convertTo12HourFormat(new Date(item.addedAt))}</p>
-            <p className="text-primary text-sm">Updated at: {convertTo12HourFormat(new Date(item.editedAt))}</p>
-            <p className="text-primary text-sm">Completed at: {convertTo12HourFormat(new Date(item.completedAt))}</p>
+            {item.editedAt &&
+              <p className="text-primary text-sm">Updated at: {convertTo12HourFormat(new Date(item.editedAt))}</p>
+            }
+            {item.completedAt &&
+              <p className="text-primary text-sm">Completed at: {convertTo12HourFormat(new Date(item.completedAt))}</p>
+            }
           </div>
         </HoverCardContent>
 

@@ -34,8 +34,13 @@ const TodoForm = ({
     } = useForm()
 
     const onSubmit = (data) => {
-        // console.log("Selected time: ", data.deadlineTime);
-        // console.log(format(new Date(date), "yyyy-MM-dd"));
+        if(date <= new Date()) {
+            toast.error("Deadline cannot be in the past", {
+                title: <h1 className="text-red-600 font-semibold">{`Could not ${editing ? "update" : "add"} your task`}</h1>,
+                description: <p className="text-black font-semibold">Deadline cannot be in the past</p>
+            })
+            return
+        }
         
         setIsLoading(true);
 
