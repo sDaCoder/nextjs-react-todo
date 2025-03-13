@@ -1,29 +1,24 @@
 "use client"
 import { useForm } from "react-hook-form"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { DateTimePicker } from "@/components/DateTimePicker/DateTimePicker"
+import { TodoContext } from "@/TodoContext"
 
-const TodoForm = ({
-    todos,
-    setTodos,
-    editing,
-    setEditing,
-    todoEdit,
-    setIsOpen,
-    isSmallScreen,
-    isLoading,
-    setIsLoading }) => {
-
-    const delay = async (dtime) => {
-        await new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-            }, dtime);
-        })
-    }
+const TodoForm = () => {
+    
+    const {
+        todos,
+        setTodos,
+        editing,
+        setEditing,
+        todoEdit,
+        setIsOpen,
+        setIsLoading,
+        delay
+    } = useContext(TodoContext)
 
     const {
         register,
@@ -32,6 +27,8 @@ const TodoForm = ({
         setFocus,
         formState: { errors },
     } = useForm()
+
+    const [date, setDate] = useState(editing ? todoEdit.deadline : new Date());
 
     const onSubmit = (data) => {
         if(date <= new Date()) {
@@ -86,7 +83,6 @@ const TodoForm = ({
         }
     }, [editing, setFocus]);
 
-    const [date, setDate] = useState(editing ? todoEdit.deadline : new Date());
 
     return (
         <>

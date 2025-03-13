@@ -2,12 +2,18 @@ import { ChevronLeft } from "lucide-react"
 import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { addDays, format, isSameDay, startOfWeek } from "date-fns"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import TimeBar from "@/components/TimeBar/TimeBar"
 import { useSwipeable } from "react-swipeable"
+import { TodoContext } from "@/TodoContext"
 
-const HorizontalCalendar = ({isSmallScreen}) => {
-  const [currentDate, setCurrentDate] = useState(new Date())
+const HorizontalCalendar = () => {
+  const {
+    isSmallScreen,
+    currentDate,
+    setCurrentDate
+  } = useContext(TodoContext)
+  
 
   const handleNextWeek = () => {
     setCurrentDate(addDays(currentDate, 7))

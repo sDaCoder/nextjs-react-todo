@@ -5,24 +5,19 @@ import { Card } from "@/components/ui/card"
 import { differenceInCalendarDays } from "date-fns"
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogTitle, AlertDialogHeader, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog"
 import { HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import { TodoContext } from "@/TodoContext"
+import { useContext } from "react"
 
-const TodoCard = ({
-  item,
-  setTodos,
-  editing,
-  setEditing,
-  todoEdit,
-  setTodoEdit,
-  isOpen,
-  setIsOpen }) => {
+const TodoCard = ({ item }) => {
 
-  const delay = async (dtime) => {
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, dtime);
-    })
-  }
+  const {
+    setTodos,
+    setEditing,
+    setTodoEdit,
+    isOpen,
+    setIsOpen,
+    delay
+  } = useContext(TodoContext)
 
   const completeTodo = async () => {
     setTodos((prevTodos) =>
