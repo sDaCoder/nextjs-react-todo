@@ -1,17 +1,19 @@
 import { ChevronLeft } from "lucide-react"
 import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { addDays, format, isSameDay, startOfWeek } from "date-fns"
-import { useState, useContext } from "react"
+import { addDays, format, isSameDay, startOfDay, startOfWeek } from "date-fns"
+import { useContext } from "react"
 import TimeBar from "@/components/TimeBar/TimeBar"
 import { useSwipeable } from "react-swipeable"
 import { TodoContext } from "@/TodoContext"
+import Link from "next/link"
 
 const HorizontalCalendar = () => {
   const {
     isSmallScreen,
     currentDate,
-    setCurrentDate
+    setCurrentDate,
+    paramDate
   } = useContext(TodoContext)
   
 
@@ -50,13 +52,13 @@ const HorizontalCalendar = () => {
           
           <div className="flex flex-wrap justify-center md:gap-6 gap-2 px-3">
             {dates.map((date, index) =>(
-              <div
+              <Link href={`/${startOfDay(date).getTime()}`}
                 key={index}
                 className={`flex flex-col items-center justify-center md:w-12 w-9 md:h-16 h-12 rounded-lg cursor-pointer transition-colors py-8 px-4 
-                ${isSameDay(date, new Date()) ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>
+                ${isSameDay(date, paramDate) ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>
                   <span className="text-sm">{format(date, "EEE")}</span>
                   <span className="md:text-2xl text-md font-bold">{format(date, "d")}</span>
-              </div>
+              </Link>
             ))}
           </div>
 

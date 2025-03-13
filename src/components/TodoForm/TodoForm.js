@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DateTimePicker } from "@/components/DateTimePicker/DateTimePicker"
 import { TodoContext } from "@/TodoContext"
-import { showErrorToast, showNormalToast } from "@/actions/showToast"
 
 const TodoForm = () => {
     
@@ -17,6 +16,8 @@ const TodoForm = () => {
         todoEdit,
         setIsOpen,
         setIsLoading,
+        showErrorToast,
+        showNormalToast
     } = useContext(TodoContext)
 
     const {
@@ -44,12 +45,25 @@ const TodoForm = () => {
             if (editing) {
                 setTodos((prevTodos) => (
                     prevTodos.map((todo) =>
-                        todo.id === todoEdit.id ? { ...todo, todo: data.todo, desc: data.desc, deadline: date, editedAt: Date.now() } : todo
+                        todo.id === todoEdit.id ? { 
+                            ...todo, 
+                            todo: data.todo, 
+                            desc: data.desc, 
+                            deadline: date, 
+                            editedAt: Date.now() 
+                        } : todo
                     )
                 ))
                 setEditing(false);
             }
-            else setTodos([...todos, { todo: data.todo, desc: data.desc, deadline: date, isDone: false, addedAt: Date.now(), id: Date.now() }]);
+            else setTodos([...todos, { 
+                todo: data.todo, 
+                desc: data.desc, 
+                deadline: date, 
+                isDone: false, 
+                addedAt: Date.now(), 
+                id: Date.now() 
+            }]);
             reset();
             setIsLoading(false);
         }, 2000);
