@@ -53,7 +53,6 @@ export default function Home() {
       setCurrentDate,
       delay
     }}>
-
       <HorizontalCalendar />
       <AllTasksSection />
       {(isOpen && !isSmallScreen) && (

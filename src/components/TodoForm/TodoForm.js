@@ -2,10 +2,10 @@
 import { useForm } from "react-hook-form"
 import { useEffect, useState, useContext } from "react"
 import { Button } from "@/components/ui/button"
-import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { DateTimePicker } from "@/components/DateTimePicker/DateTimePicker"
 import { TodoContext } from "@/TodoContext"
+import { showErrorToast, showNormalToast } from "@/actions/showToast"
 
 const TodoForm = () => {
     
@@ -17,7 +17,6 @@ const TodoForm = () => {
         todoEdit,
         setIsOpen,
         setIsLoading,
-        delay
     } = useContext(TodoContext)
 
     const {
@@ -32,10 +31,10 @@ const TodoForm = () => {
 
     const onSubmit = (data) => {
         if(date <= new Date()) {
-            toast.error("Deadline cannot be in the past", {
-                title: <h1 className="text-red-600 font-semibold">{`Could not ${editing ? "update" : "add"} your task`}</h1>,
-                description: <p className="text-black font-semibold">Deadline cannot be in the past</p>
-            })
+            showErrorToast(
+                `Could not ${editing ? "update" : "add"} your task`,
+                `Deadline cannot be in the past`
+            )
             return
         }
         
@@ -54,19 +53,14 @@ const TodoForm = () => {
             reset();
             setIsLoading(false);
         }, 2000);
-        toast.promise(delay(2000), {
-            loading: `${editing ? "Updating" : "Adding"} Your Task`,
-            success: ("Event has been created", {
-                message: <h1 className="text-green-600 font-semibold">{`Your task has been ${editing ? "updated" : "added"} successfully`}</h1>,
-                duration: 4000,
-                description: <h1 className="text-black font-semibold">{data.todo}</h1>,
-            }),
-            error: ("Event has not been created", {
-                message: <h1 className="text-red-600 font-semibold">{`Your task has not been ${editing ? "updated" : "added"}. Try Again`}</h1>,
-                duration: 4000,
-                description: <h1 className="text-black font-semibold">{data.todo}</h1>,
-            }),
-        });
+
+        showNormalToast(
+            `${editing ? "Updating" : "Adding"} Your Task`,
+            `Your task has been ${editing ? "updated" : "added"} successfully`,
+            data.todo,
+            `${editing ? "edit" : "add"}`,
+            2000
+        )
     }
 
     useEffect(() => {

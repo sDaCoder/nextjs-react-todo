@@ -1,5 +1,4 @@
 "use client"
-import { toast } from "sonner"
 import { CircleCheckBig, FilePenLine, Trash2, CircleX } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { differenceInCalendarDays } from "date-fns"
@@ -7,6 +6,7 @@ import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogTitle, 
 import { HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { TodoContext } from "@/TodoContext"
 import { useContext } from "react"
+import { showNormalToast } from "@/actions/showToast"
 
 const TodoCard = ({ item }) => {
 
@@ -16,7 +16,6 @@ const TodoCard = ({ item }) => {
     setTodoEdit,
     isOpen,
     setIsOpen,
-    delay
   } = useContext(TodoContext)
 
   const completeTodo = async () => {
@@ -34,35 +33,26 @@ const TodoCard = ({ item }) => {
 
     // Displaying the toast when the task is not completed
     if (!item.isDone) {
-      toast.promise(delay(0), {
-        loading: `Completing Your Task`,
-        success: ("Event completed", {
-          message: <h1 className="text-green-600 font-semibold">{`Congratulations! You've completed your task.`}</h1>,
-          duration: 4000,
-          description: <h1 className="text-black font-semibold">{item.todo}</h1>,
-        }),
-        error: ("Could not complete the action", {
-          message: <h1 className="text-red-600 font-semibold">{`Could not complete the action. Try Again`}</h1>,
-          duration: 4000,
-        }),
-      });
+      showNormalToast(
+        `Completing Your Task`,
+        `Congratulations! You've completed your task.`,
+        item.todo,
+        'completing',
+        0
+      )
     }
   }
 
   const handleDeleteTodo = () => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== item.id));
-    toast.promise(delay(0), {
-      loading: `Deleting Your Task`,
-      success: ("Event completed", {
-        message: <h1 className="text-yellow-500 font-semibold">{`Your Task has been deleted successfully.`}</h1>,
-        duration: 4000,
-        description: <h1 className="text-black font-semibold">{item.todo}</h1>,
-      }),
-      error: ("Could not complete the action", {
-        message: <h1 className="text-red-600 font-semibold">{`Could not complete the action. Try Again`}</h1>,
-        duration: 4000,
-      }),
-    });
+
+    showNormalToast(
+      `Deleting Your Task`,
+      `Your Task has been deleted successfully.`,
+      `${item.todo}`,
+      'delete',
+      0
+    )
   }
 
   const handleEditing = () => {
