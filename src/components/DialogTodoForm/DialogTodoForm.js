@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import TodoForm from "@/components/TodoForm/TodoForm";
 import { useContext } from "react";
-import { TodoContext } from "@/TodoContext";
+import { TodoContext } from "@/Context/TodoContext";
 
 const DialogTodoForm = () => {
     const {

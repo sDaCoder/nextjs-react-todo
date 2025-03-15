@@ -2,11 +2,12 @@
 import { useState, useRef, useEffect } from "react";
 import HorizontalCalendar from "@/components/HorizontalCalendar/HorizontalCalendar";
 import AllTasksSection from "@/components/AllTasksSection/AllTasksSection";
-import { TodoContext } from "@/TodoContext";
+import { TodoContext } from "@/Context/TodoContext";
 import { delay } from "@/actions/delay";
 import { toast } from "sonner";
 import { startOfDay } from "date-fns";
 import { useParams } from "next/navigation";
+import { readTodos } from "@/actions/readTodos";
 
 export default function Home() {
   const params = useParams();
@@ -25,6 +26,19 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentDate, setCurrentDate] = useState(startOfDay(new Date()))
 
+  useEffect(() => {
+    (async function () {
+      try {
+        const todoData = await readTodos();
+        setTodos(todoData.filter((todo) => todo.deadline === paramDate));
+        
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+  console.log(todos);
+  
   useEffect(() => {
     setIsClient(true);
     setIsSmallScreen(window.innerWidth < 500);
@@ -63,7 +77,6 @@ export default function Home() {
       }),
     });
   }
-
   return (
     <TodoContext.Provider value={{
       ref,

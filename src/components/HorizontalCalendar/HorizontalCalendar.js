@@ -5,7 +5,7 @@ import { addDays, format, isSameDay, startOfDay, startOfWeek } from "date-fns"
 import { useContext } from "react"
 import TimeBar from "@/components/TimeBar/TimeBar"
 import { useSwipeable } from "react-swipeable"
-import { TodoContext } from "@/TodoContext"
+import { TodoContext } from "@/Context/TodoContext"
 import Link from "next/link"
 
 const HorizontalCalendar = () => {
@@ -52,7 +52,9 @@ const HorizontalCalendar = () => {
           
           <div className="flex flex-wrap justify-center md:gap-6 gap-2 px-3">
             {dates.map((date, index) =>(
-              <Link href={`/${startOfDay(date).getTime()}`}
+              <Link 
+                onClick={() => setCurrentDate(date)} 
+                href={`/${date.getTime()}`}
                 key={index}
                 className={`flex flex-col items-center justify-center md:w-12 w-9 md:h-16 h-12 rounded-lg cursor-pointer transition-colors py-8 px-4 
                 ${isSameDay(date, paramDate) ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>

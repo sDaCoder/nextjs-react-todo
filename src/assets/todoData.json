@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "todo": "Buy milk",
+    "desc": "Buy milk from the store",
+    "deadline": 1742063400000,
+    "isDone": false,
+    "completedAt": null,
+    "editedAt": null
+  },
+  {
+    "id": 2,
+    "todo": "Buy eggs",
+    "desc": "Buy eggs from the store",
+    "deadline": 1742063400000,
+    "isDone": false,
+    "completedAt": null,
+    "editedAt": null
+  },
+  {
+    "id": 3,
+    "todo": "Buy bread",
+    "desc": "Buy bread from the store",
+    "deadline": 1741977000000,
+    "isDone": false,
+    "completedAt": null,
+    "editedAt": null
+  },
+  {
+    "id": 4,
+    "todo": "Buy sugar",
+    "desc": "Buy sugar from the store",
+    "deadline": 1741977000000,
+    "isDone": false,
+    "completedAt": null,
+    "editedAt": null
+  },
+  {
+    "id": 5,
+    "todo": "Buy coffee",
+    "desc": "Buy coffee from the store",
+    "deadline": 1741977000000,
+    "isDone": false,
+    "completedAt": null,
+    "editedAt": null
+  },
+  {
+    "id": 6,
+    "todo": "Buy tea",
+    "desc": "Buy tea from the store",
+    "deadline": 1742149800000,
+    "isDone": false,
+    "completedAt": null,
+    "editedAt": null
+  },
+  {
+    "id": 7,
+    "todo": "Buy snacks",
+    "desc": "Buy snacks from the store",
+    "deadline": 1742063400000,
+    "isDone": false,
+    "completedAt": null,
+    "editedAt": null
+  },
+  {
+    "id": 8,
+    "todo": "Buy fruits",
+    "desc": "Buy fruits from the store",
+    "deadline": 1742063400000,
+    "isDone": false,
+    "completedAt": null,
+    "editedAt": null
+  },
+  {
+    "id": 9,
+    "todo": "Buy vegetables",
+    "desc": "Buy vegetables from the store",
+    "deadline": 1741977000000,
+    "isDone": false,
+    "completedAt": null,
+    "editedAt": null
+  }
+]

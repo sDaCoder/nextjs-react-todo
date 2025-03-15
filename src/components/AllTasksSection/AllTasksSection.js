@@ -6,7 +6,7 @@ import DialogTodoForm from '@/components/DialogTodoForm/DialogTodoForm';
 import { Button } from '@/components/ui/button';
 import { CopyPlus, Loader2 } from 'lucide-react';
 import { HoverCard } from '@/components/ui/hover-card';
-import { TodoContext } from '@/TodoContext';
+import { TodoContext } from '@/Context/TodoContext';
 
 const AllTasksSection = () => {
 

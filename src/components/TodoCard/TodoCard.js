@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card"
 import { differenceInCalendarDays } from "date-fns"
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogTitle, AlertDialogHeader, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog"
 import { HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import { TodoContext } from "@/TodoContext"
+import { TodoContext } from "@/Context/TodoContext"
 import { useContext } from "react"
 import { showNormalToast } from "@/actions/showToast"
 
@@ -22,10 +22,18 @@ const TodoCard = ({ item }) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => {
         if (todo.isDone) {
-          return todo.id === item.id ? { ...todo, isDone: !todo.isDone, completedAt: null } : todo
+          return todo.id === item.id ? { 
+            ...todo, 
+            isDone: !todo.isDone, 
+            completedAt: null 
+          } : todo
         }
         else {
-          return todo.id === item.id ? { ...todo, isDone: !todo.isDone, completedAt: Date.now() } : todo
+          return todo.id === item.id ? { 
+            ...todo, 
+            isDone: !todo.isDone, 
+            completedAt: Date.now() 
+          } : todo
         }
       }
       )

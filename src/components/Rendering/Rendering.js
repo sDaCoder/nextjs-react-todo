@@ -1,4 +1,4 @@
-import { TodoContext } from "@/TodoContext"
+import { TodoContext } from "@/Context/TodoContext"
 import { useContext } from "react"
 
 const Rendering = () => {
