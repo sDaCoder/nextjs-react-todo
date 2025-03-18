@@ -5,7 +5,6 @@ import AllTasksSection from "@/components/AllTasksSection/AllTasksSection";
 import { TodoContext } from "@/Context/TodoContext";
 import { delay } from "@/actions/delay";
 import { toast } from "sonner";
-import { startOfDay } from "date-fns";
 import { useParams } from "next/navigation";
 import { readTodos } from "@/actions/readTodos";
 
@@ -24,7 +23,7 @@ export default function Home() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentDate, setCurrentDate] = useState(startOfDay(new Date()))
+  const [selectedDate, setSelectedDate] = useState(paramDate);
 
   useEffect(() => {
     (async function () {
@@ -92,8 +91,8 @@ export default function Home() {
       setIsSmallScreen,
       isLoading,
       setIsLoading,
-      currentDate,
-      setCurrentDate,
+      selectedDate,
+      setSelectedDate,
       delay,
       showErrorToast,
       showNormalToast,
