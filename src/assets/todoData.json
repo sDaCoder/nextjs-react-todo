@@ -3,7 +3,7 @@
     "id": 1,
     "todo": "Buy milk",
     "desc": "Buy milk from the store",
-    "deadline": 1742063400000,
+    "deadline": 1742063400999,
     "isDone": false,
     "completedAt": null,
     "editedAt": null

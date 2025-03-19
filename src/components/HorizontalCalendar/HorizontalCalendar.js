@@ -12,7 +12,8 @@ const HorizontalCalendar = () => {
   const {
     isSmallScreen,
     selectedDate,
-    paramDate
+    paramDate,
+    setIsLoading,
   } = useContext(TodoContext)
 
   const [currentDate, setCurrentDate] = useState(selectedDate)
@@ -55,7 +56,10 @@ const HorizontalCalendar = () => {
           <div className="flex flex-wrap justify-center md:gap-6 gap-2 px-3">
             {dates.map((date, index) =>(
               <div 
-                onClick={() => router.push(`/${date.getTime()}`)} 
+                onClick={() => {
+                  setIsLoading(true);
+                  router.push(`/${date.getTime()}`);
+                }} 
                 key={index}
                 className={`flex flex-col items-center justify-center md:w-12 w-9 md:h-16 h-12 rounded-lg cursor-pointer transition-colors py-8 px-4 
                 ${isSameDay(date, paramDate) ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>

@@ -6,7 +6,7 @@ import { TodoContext } from "@/Context/TodoContext";
 import { delay } from "@/actions/delay";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
-import { readTodos } from "@/actions/readTodos";
+import NavigateProgress from "@/components/NavigateProgress/NavigateProgress";
 
 export default function Home() {
   const params = useParams();
@@ -23,33 +23,40 @@ export default function Home() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(paramDate);
+  const [selectedDate, setSelectedDate] = useState(new Date(paramDate));
+
+  const delayTime = (ms) => new Promise((res) => setTimeout(res, ms));
 
   useEffect(() => {
-    (async function () {
+    (async function apiCall () {
+      const url = '/api/read';
       try {
-        const todoData = await readTodos();
-        setTodos(todoData.filter((todo) => todo.deadline === paramDate));
-        
+        const res = await fetch(url);
+        const data = await res.json();
+        setTodos(data.todos.filter((todo) => todo.deadline === paramDate));
       } catch (error) {
         console.log(error);
       }
     })();
+    
+    function setScreenSize() {
+      setIsClient(true);
+      setIsSmallScreen(window.innerWidth < 500);
+      const handleResize = () => {
+        setIsSmallScreen(window.innerWidth < 500);
+      };
+    
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+    setScreenSize();
   }, []);
   console.log(todos);
   
-  useEffect(() => {
-    setIsClient(true);
-    setIsSmallScreen(window.innerWidth < 500);
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 500);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  // useEffect(() => {
+  // }, []);
   if (!isClient) return null;
 
   const showErrorToast = (title, description) => {
@@ -98,6 +105,7 @@ export default function Home() {
       showNormalToast,
       paramDate
     }}>
+      <NavigateProgress />
       <HorizontalCalendar />
       <AllTasksSection />
       {(isOpen && !isSmallScreen) && (
