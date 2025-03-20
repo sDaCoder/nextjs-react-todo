@@ -15,7 +15,7 @@ const AllTasksSection = () => {
         isLoading,
         isSmallScreen,
         setIsOpen,
-        setEditing
+        setEditing,
     } = useContext(TodoContext);
 
     return (

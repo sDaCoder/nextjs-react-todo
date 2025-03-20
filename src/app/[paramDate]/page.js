@@ -1,12 +1,14 @@
 "use client"
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, lazy, Suspense } from "react";
 import HorizontalCalendar from "@/components/HorizontalCalendar/HorizontalCalendar";
-import AllTasksSection from "@/components/AllTasksSection/AllTasksSection";
 import { TodoContext } from "@/Context/TodoContext";
 import { delay } from "@/actions/delay";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
 import NavigateProgress from "@/components/NavigateProgress/NavigateProgress";
+import Loading from "@/components/Loading/Loading";
+import { startOfDay } from "date-fns";
+const AllTasksSection = lazy(() => import('@/components/AllTasksSection/AllTasksSection'));
 
 export default function Home() {
   const params = useParams();
@@ -28,35 +30,29 @@ export default function Home() {
   const delayTime = (ms) => new Promise((res) => setTimeout(res, ms));
 
   useEffect(() => {
-    (async function apiCall () {
-      const url = '/api/read';
+    (async function apiCall() {
+      const url = '/api/readMongo';
       try {
         const res = await fetch(url);
         const data = await res.json();
-        setTodos(data.todos.filter((todo) => todo.deadline === paramDate));
+        setTodos(data.todos.filter((todo) => todo.deadline >= paramDate && todo.deadline <= paramDate + 86400000));
       } catch (error) {
         console.log(error);
       }
     })();
-    
-    function setScreenSize() {
-      setIsClient(true);
+
+    console.log("Calculating screen size");
+    setIsClient(true);
+    setIsSmallScreen(window.innerWidth < 500);
+    const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 500);
-      const handleResize = () => {
-        setIsSmallScreen(window.innerWidth < 500);
-      };
-    
-      window.addEventListener("resize", handleResize);
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
-    }
-    setScreenSize();
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
-  console.log(todos);
-  
-  // useEffect(() => {
-  // }, []);
   if (!isClient) return null;
 
   const showErrorToast = (title, description) => {
@@ -107,7 +103,13 @@ export default function Home() {
     }}>
       <NavigateProgress />
       <HorizontalCalendar />
-      <AllTasksSection />
+      <Suspense fallback={
+        <div className="flex flex-col py-6 gap-8 items-center justify-center">
+          <Loading />
+        </div>
+      } >
+        <AllTasksSection />
+      </Suspense>
       {(isOpen && !isSmallScreen) && (
         <div
           className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"

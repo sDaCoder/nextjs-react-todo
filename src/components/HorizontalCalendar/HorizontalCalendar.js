@@ -57,7 +57,7 @@ const HorizontalCalendar = () => {
             {dates.map((date, index) =>(
               <div 
                 onClick={() => {
-                  setIsLoading(true);
+                  // setIsLoading(true);
                   router.push(`/${date.getTime()}`);
                 }} 
                 key={index}

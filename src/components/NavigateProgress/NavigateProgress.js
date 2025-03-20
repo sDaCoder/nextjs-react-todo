@@ -22,9 +22,11 @@ const NavigateProgress = () => {
         // }
 
         (async function () {
-            // setIsLoading(true);
+            setIsLoading(true);
+            // console.log("Laoding");
             await delayTime(1000);
             setIsLoading(false);
+            // console.log("Laoding complete");
         })();
       
     }, [pathname, searchParams])
