@@ -56,7 +56,7 @@ const TodoCard = ({ item }) => {
     (async () => {
       try {
         const res = await fetch(`/api/readMongo`, {
-          method: 'POST',
+          method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
           },

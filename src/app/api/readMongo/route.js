@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { configDotenv } from "dotenv";
 import { MongoClient } from "mongodb";
-import { ObjectId } from "mongodb";
+import Todo from "@/models/todoModel";
+import mongoose from "mongoose";
 
 const URI = process.env.MONGO_URI
 const client = new MongoClient(URI)
@@ -38,29 +38,73 @@ export async function GET() {
     }
 }
 
-export async function POST(request) 
-{
+export async function POST(request) {
     try {
         const body = await request.json()
-        const {id} = body
-        console.log(body, id);
+        
+        if (mongoose.connection.readyState === 1) {
+            console.log("Already connected to MongoDB");
+            return NextResponse.json({
+                status: "success",
+                message: "MongoDB already connected",
+            });
+        }
+        
+        await mongoose.connect(URI, {dbName: "todos"});
+        
+        const newTodo = new Todo(body)
+        const result = await Todo.create(newTodo)
+        console.log(result);
 
-        await client.connect()
-        const database = client.db("todos")
-        const collection = database.collection("todo-01");
-        const result = await collection.deleteOne({ _id: new ObjectId(id) });
 
         return NextResponse.json({
             status: 'success',
-            message: 'Reading the data from MongoDB',
-            result
-        })
+            message: 'Adding a new Todo to the database',
+            body
+        })   
     } catch (error) {
         console.log(error);
         return NextResponse.json({
             status: 'failure',
-            message: 'Could not delete the data',
-            error
+            message: 'Could not read the data from the client side',
+            error: error.message
         })
+    } finally {
+        await mongoose.disconnect();
     }
+}
+
+
+export async function DELETE(request) 
+{
+    const body = await request.json()
+    console.log(body);
+    return NextResponse.json({
+        status: 'success',
+        message: 'Reading the data from the client side',
+        body
+    })
+    // try {
+    //     const body = await request.json()
+    //     const {id} = body
+    //     console.log(body, id);
+
+    //     await client.connect()
+    //     const database = client.db("todos")
+    //     const collection = database.collection("todo-01");
+    //     const result = await collection.deleteOne({ _id: new ObjectId(id) });
+
+    //     return NextResponse.json({
+    //         status: 'success',
+    //         message: 'Reading the data from MongoDB',
+    //         result
+    //     })
+    // } catch (error) {
+    //     console.log(error);
+    //     return NextResponse.json({
+    //         status: 'failure',
+    //         message: 'Could not delete the data',
+    //         error
+    //     })
+    // }
 }
