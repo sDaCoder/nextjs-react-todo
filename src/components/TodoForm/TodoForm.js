@@ -7,12 +7,14 @@ import { Input } from "@/components/ui/input"
 import { DateTimePicker } from "@/components/DateTimePicker/DateTimePicker"
 import useTodo from "@/app/hooks/useTodo"
 import useStatedata from "@/app/hooks/useStatedata"
+import axios from "axios"
 
 const TodoForm = () => {
 
     const {
         todos,
         setTodos,
+        refreshTodos,
         editing,
         setEditing,
         todoEdit,
@@ -35,7 +37,7 @@ const TodoForm = () => {
         formState: { errors },
     } = useForm()
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         if (date <= new Date()) {
             toast.error("Deadline cannot be in the past", {
                 title: <h1 className="text-red-600 font-semibold">{`Could not ${editing ? "update" : "add"} your task`}</h1>,
@@ -46,20 +48,30 @@ const TodoForm = () => {
 
         setIsLoading(true);
 
-        setTimeout(() => {
-            if (editing) {
-                setTodos((prevTodos) => (
-                    prevTodos.map((todo) =>
-                        todo.id === todoEdit.id ? { ...todo, todo: data.todo, desc: data.desc, deadline: date, editedAt: Date.now() } : todo
-                    )
-                ))
-                setEditing(false);
+        await delay(2000);
+
+        if (editing) {
+            setTodos((prevTodos) => (
+                prevTodos.map((todo) =>
+                    todo.id === todoEdit.id ? { ...todo, todo: data.todo, desc: data.desc, deadline: date, editedAt: Date.now() } : todo
+                )
+            ))
+            setEditing(false);
+        }
+        else {
+            try {
+                // setTodos([...todos, { todo: data.todo, desc: data.desc, deadline: date, isDone: false, addedAt: Date.now(), id: Date.now() }]);
+                const res = await axios.post("/api/todos", { todo: data.todo, desc: data.desc, deadline: date });
+                console.log(res.data);
+                await refreshTodos();
+            } catch (error) {
+                console.log("Error occurred while adding the todo:", error);
             }
-            else setTodos([...todos, { todo: data.todo, desc: data.desc, deadline: date, isDone: false, addedAt: Date.now(), id: Date.now() }]);
-            reset();
-            setIsLoading(false);
-        }, 2000);
-        toast.promise(delay(2000), {
+        }
+        reset();
+        setIsLoading(false);
+
+        toast.promise(delay(1000), {
             loading: `${editing ? "Updating" : "Adding"} Your Task`,
             success: ("Event has been created", {
                 message: <h1 className="text-green-600 font-semibold">{`Your task has been ${editing ? "updated" : "added"} successfully`}</h1>,

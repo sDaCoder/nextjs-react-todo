@@ -12,15 +12,31 @@ import useTodo from '@/app/hooks/useTodo';
 const TodosArea = () => {
 
     const [isClient, setIsClient] = useState(false);
-    const { setIsSmallScreen, setIsOpen, isLoading } = useStatedata();
-    const { todos, setEditing } = useTodo();
+    const { setIsSmallScreen, setIsOpen, isLoading, setIsLoading } = useStatedata();
+    const { todos, refreshTodos, setEditing } = useTodo();
 
     useEffect(() => {
+        setIsLoading(true);
         setIsClient(true);
         setIsSmallScreen(window.innerWidth < 500);
         const handleResize = () => {
             setIsSmallScreen(window.innerWidth < 500);
         };
+
+        // const fetchTodos = async () => {
+        //     try {
+        //         const res = await axios.get("/api/todos");
+        //         setTodos(res.data);
+        //     } catch (error) {
+        //         console.log("Error occurred while fetching the todos:", error);
+        //     } finally {
+        //         setIsLoading(false);
+        //     }
+        // }
+        setTimeout(() => {
+            // fetchTodos();
+            refreshTodos().finally(() => setIsLoading(false));
+        }, 2000);
 
         window.addEventListener("resize", handleResize);
         return () => {
@@ -28,7 +44,6 @@ const TodosArea = () => {
         };
     }, []);
     if (!isClient) return null;
-
 
     return (
         <>
