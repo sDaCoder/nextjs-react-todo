@@ -1,3 +1,4 @@
+"use client"
 import { ChevronLeft } from "lucide-react"
 import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -5,8 +6,10 @@ import { addDays, format, isSameDay, startOfWeek } from "date-fns"
 import { useState } from "react"
 import TimeBar from "@/components/TimeBar/TimeBar"
 import { useSwipeable } from "react-swipeable"
+import useStatedata from "@/app/hooks/useStatedata"
 
-const HorizontalCalendar = ({isSmallScreen}) => {
+const HorizontalCalendar = () => {
+  const { isSmallScreen } = useStatedata();
   const [currentDate, setCurrentDate] = useState(new Date())
 
   const handleNextWeek = () => {
@@ -41,15 +44,15 @@ const HorizontalCalendar = ({isSmallScreen}) => {
               <ChevronLeft />
             </Button>
           }
-          
+
           <div className="flex flex-wrap justify-center md:gap-6 gap-2 px-3">
-            {dates.map((date, index) =>(
+            {dates.map((date, index) => (
               <div
                 key={index}
                 className={`flex flex-col items-center justify-center md:w-12 w-9 md:h-16 h-12 rounded-lg cursor-pointer transition-colors py-8 px-4 
                 ${isSameDay(date, new Date()) ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>
-                  <span className="text-sm">{format(date, "EEE")}</span>
-                  <span className="md:text-2xl text-md font-bold">{format(date, "d")}</span>
+                <span className="text-sm">{format(date, "EEE")}</span>
+                <span className="md:text-2xl text-md font-bold">{format(date, "d")}</span>
               </div>
             ))}
           </div>

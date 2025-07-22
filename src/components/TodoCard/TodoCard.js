@@ -5,16 +5,19 @@ import { Card } from "@/components/ui/card"
 import { differenceInCalendarDays } from "date-fns"
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogTitle, AlertDialogHeader, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog"
 import { HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import useStatedata from "@/app/hooks/useStatedata"
+import useTodo from "@/app/hooks/useTodo"
 
 const TodoCard = ({
   item,
-  setTodos,
-  editing,
-  setEditing,
-  todoEdit,
-  setTodoEdit,
-  isOpen,
-  setIsOpen }) => {
+}) => {
+
+  const { isOpen, setIsOpen } = useStatedata();
+  const {
+    setTodos,
+    setEditing,
+    setTodoEdit,
+  } = useTodo();
 
   const delay = async (dtime) => {
     await new Promise((resolve) => {

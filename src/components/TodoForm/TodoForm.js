@@ -5,17 +5,19 @@ import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { DateTimePicker } from "@/components/DateTimePicker/DateTimePicker"
+import useTodo from "@/app/hooks/useTodo"
+import useStatedata from "@/app/hooks/useStatedata"
 
-const TodoForm = ({
-    todos,
-    setTodos,
-    editing,
-    setEditing,
-    todoEdit,
-    setIsOpen,
-    isSmallScreen,
-    isLoading,
-    setIsLoading }) => {
+const TodoForm = () => {
+
+    const {
+        todos,
+        setTodos,
+        editing,
+        setEditing,
+        todoEdit,
+    } = useTodo();
+    const {setIsOpen, setIsLoading} = useStatedata();
 
     const delay = async (dtime) => {
         await new Promise((resolve) => {
@@ -34,14 +36,14 @@ const TodoForm = ({
     } = useForm()
 
     const onSubmit = (data) => {
-        if(date <= new Date()) {
+        if (date <= new Date()) {
             toast.error("Deadline cannot be in the past", {
                 title: <h1 className="text-red-600 font-semibold">{`Could not ${editing ? "update" : "add"} your task`}</h1>,
                 description: <p className="text-black font-semibold">Deadline cannot be in the past</p>
             })
             return
         }
-        
+
         setIsLoading(true);
 
         setTimeout(() => {
@@ -99,6 +101,10 @@ const TodoForm = ({
                     placeholder="Your Todo"
                     name="todo"
                 />
+                <DateTimePicker
+                    date={date}
+                    setDate={setDate}
+                />
                 <Input
                     type="text"
                     defaultValue={editing ? todoEdit.desc : ""}
@@ -113,10 +119,6 @@ const TodoForm = ({
                     defaultValue={editing ? todoEdit.deadlineTime : "12:00"}
                     {...register("deadlineTime")}
                 /> */}
-                <DateTimePicker
-                    date={date}
-                    setDate={setDate}
-                />
                 <Button
                     onClick={() => setIsOpen(false)}
                     type="submit" className=" py-2 px-4 rounded" >
