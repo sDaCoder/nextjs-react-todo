@@ -5,19 +5,21 @@ import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { DateTimePicker } from "@/components/DateTimePicker/DateTimePicker"
-import useTodo from "@/app/hooks/useTodo"
-import useStatedata from "@/app/hooks/useStatedata"
+import useTodo from "@/hooks/useTodo"
+import useStatedata from "@/hooks/useStatedata"
+import axios from "axios"
 
 const TodoForm = () => {
 
     const {
         todos,
         setTodos,
+        refreshTodos,
         editing,
         setEditing,
         todoEdit,
     } = useTodo();
-    const {setIsOpen, setIsLoading} = useStatedata();
+    const { setIsOpen, setIsLoading } = useStatedata();
 
     const delay = async (dtime) => {
         await new Promise((resolve) => {
@@ -35,7 +37,7 @@ const TodoForm = () => {
         formState: { errors },
     } = useForm()
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         if (date <= new Date()) {
             toast.error("Deadline cannot be in the past", {
                 title: <h1 className="text-red-600 font-semibold">{`Could not ${editing ? "update" : "add"} your task`}</h1>,
@@ -45,21 +47,36 @@ const TodoForm = () => {
         }
 
         setIsLoading(true);
-
-        setTimeout(() => {
-            if (editing) {
+        await delay(2000);
+        if (editing) {
+            try {
                 setTodos((prevTodos) => (
                     prevTodos.map((todo) =>
                         todo.id === todoEdit.id ? { ...todo, todo: data.todo, desc: data.desc, deadline: date, editedAt: Date.now() } : todo
                     )
                 ))
+                const res = await axios.patch(`/api/todos/${todoEdit.id}`, { todo: data.todo, desc: data.desc, deadline: date });
+                console.log(res.data);
+                await refreshTodos();
                 setEditing(false);
+            } catch (error) {
+                console.log("Error occurred while updating the todo:", error);
             }
-            else setTodos([...todos, { todo: data.todo, desc: data.desc, deadline: date, isDone: false, addedAt: Date.now(), id: Date.now() }]);
-            reset();
-            setIsLoading(false);
-        }, 2000);
-        toast.promise(delay(2000), {
+        }
+        else {
+            try {
+                // setTodos([...todos, { todo: data.todo, desc: data.desc, deadline: date, isDone: false, addedAt: Date.now(), id: Date.now() }]);
+                const res = await axios.post("/api/todos", { todo: data.todo, desc: data.desc, deadline: date });
+                console.log(res.data);
+                await refreshTodos();
+            } catch (error) {
+                console.log("Error occurred while adding the todo:", error);
+            }
+        }
+        reset();
+        setIsLoading(false);
+
+        toast.promise(delay(1000), {
             loading: `${editing ? "Updating" : "Adding"} Your Task`,
             success: ("Event has been created", {
                 message: <h1 className="text-green-600 font-semibold">{`Your task has been ${editing ? "updated" : "added"} successfully`}</h1>,
@@ -88,7 +105,17 @@ const TodoForm = () => {
         }
     }, [editing, setFocus]);
 
-    const [date, setDate] = useState(editing ? todoEdit.deadline : new Date());
+    const [date, setDate] = useState(editing && todoEdit.deadline
+        ? new Date(todoEdit.deadline)
+        : new Date());
+
+    useEffect(() => {
+        if (editing && todoEdit.deadline) {
+            setDate(new Date(todoEdit.deadline));
+        } else {
+            setDate(new Date());
+        }
+    }, [editing, todoEdit]);
 
     return (
         <>

@@ -5,16 +5,16 @@ import { Card } from "@/components/ui/card"
 import { differenceInCalendarDays } from "date-fns"
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogTitle, AlertDialogHeader, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog"
 import { HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import useStatedata from "@/app/hooks/useStatedata"
-import useTodo from "@/app/hooks/useTodo"
+import useStatedata from "@/hooks/useStatedata"
+import useTodo from "@/hooks/useTodo"
+import axios from "axios"
 
-const TodoCard = ({
-  item,
-}) => {
+const TodoCard = ({ item }) => {
 
-  const { isOpen, setIsOpen } = useStatedata();
+  const { isOpen, setIsOpen, setIsLoading } = useStatedata();
   const {
     setTodos,
+    refreshTodos,
     setEditing,
     setTodoEdit,
   } = useTodo();
@@ -28,17 +28,24 @@ const TodoCard = ({
   }
 
   const completeTodo = async () => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) => {
-        if (todo.isDone) {
-          return todo.id === item.id ? { ...todo, isDone: !todo.isDone, completedAt: null } : todo
+    try {
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) => {
+          if (todo.isDone) {
+            return todo.id === item.id ? { ...todo, isDone: !todo.isDone, completedAt: null } : todo
+          }
+          else {
+            return todo.id === item.id ? { ...todo, isDone: !todo.isDone, completedAt: Date.now() } : todo
+          }
         }
-        else {
-          return todo.id === item.id ? { ...todo, isDone: !todo.isDone, completedAt: Date.now() } : todo
-        }
-      }
-      )
-    );
+        )
+      );
+      const res = axios.patch(`/api/todos/${item.id}`, { isDone: !item.isDone });
+      console.log(res.data);
+      
+    } catch (error) {
+      console.log("Error in completing the todo: ", error);
+    }
 
     // Displaying the toast when the task is not completed
     if (!item.isDone) {
@@ -57,20 +64,34 @@ const TodoCard = ({
     }
   }
 
-  const handleDeleteTodo = () => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== item.id));
-    toast.promise(delay(0), {
-      loading: `Deleting Your Task`,
-      success: ("Event completed", {
-        message: <h1 className="text-yellow-500 font-semibold">{`Your Task has been deleted successfully.`}</h1>,
-        duration: 4000,
-        description: <h1 className="text-black font-semibold">{item.todo}</h1>,
-      }),
-      error: ("Could not complete the action", {
-        message: <h1 className="text-red-600 font-semibold">{`Could not complete the action. Try Again`}</h1>,
-        duration: 4000,
-      }),
-    });
+  const handleDeleteTodo = async (id) => {
+    // setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== item.id));
+    console.log(id);
+    try {
+      const res = await axios.delete(`/api/todos/${id}`);
+      console.log(res.data);
+      
+      toast.promise(delay(0), {
+        loading: `Deleting Your Task`,
+        success: ("Event completed", {
+          message: <h1 className="text-yellow-500 font-semibold">{`Your Task has been deleted successfully.`}</h1>,
+          duration: 4000,
+          description: <h1 className="text-black font-semibold">{item.todo}</h1>,
+        }),
+      });
+      
+      setIsLoading(true);
+      delay(2000);
+      await refreshTodos().finally(() => setIsLoading(false));
+    } catch (error) {
+      console.log("Error in deleting the todo: ", error);
+      toast.promise(delay(0), {
+        error: ("Could not complete the action", {
+          message: <h1 className="text-red-600 font-semibold">{`Could not complete the action. Try Again`}</h1>,
+          duration: 4000,
+        }),
+      })
+    }
   }
 
   const handleEditing = () => {
@@ -156,7 +177,7 @@ const TodoCard = ({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => handleDeleteTodo()}>Delete</AlertDialogAction>
+                <AlertDialogAction onClick={() => handleDeleteTodo(item.id)}>Delete</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

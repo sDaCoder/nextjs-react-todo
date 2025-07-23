@@ -1,5 +1,5 @@
 "use client"
-import useStatedata from '@/app/hooks/useStatedata';
+import useStatedata from '@/hooks/useStatedata';
 import React from 'react'
 
 const BgDimmer = () => {

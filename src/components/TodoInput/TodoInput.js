@@ -1,10 +1,10 @@
 "use client"
-import useStatedata from '@/app/hooks/useStatedata'
+import useStatedata from '@/hooks/useStatedata'
 import React from 'react'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '../ui/drawer';
 import TodoForm from '../TodoForm/TodoForm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import useTodo from '@/app/hooks/useTodo';
+import useTodo from '@/hooks/useTodo';
 
 const TodoInput = () => {
 
