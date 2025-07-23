@@ -6,7 +6,7 @@ import { addDays, format, isSameDay, startOfWeek } from "date-fns"
 import { useState } from "react"
 import TimeBar from "@/components/TimeBar/TimeBar"
 import { useSwipeable } from "react-swipeable"
-import useStatedata from "@/app/hooks/useStatedata"
+import useStatedata from "@/hooks/useStatedata"
 
 const HorizontalCalendar = () => {
   const { isSmallScreen } = useStatedata();

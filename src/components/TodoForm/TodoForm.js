@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { DateTimePicker } from "@/components/DateTimePicker/DateTimePicker"
-import useTodo from "@/app/hooks/useTodo"
-import useStatedata from "@/app/hooks/useStatedata"
+import useTodo from "@/hooks/useTodo"
+import useStatedata from "@/hooks/useStatedata"
 import axios from "axios"
 
 const TodoForm = () => {
@@ -19,7 +19,7 @@ const TodoForm = () => {
         setEditing,
         todoEdit,
     } = useTodo();
-    const {setIsOpen, setIsLoading} = useStatedata();
+    const { setIsOpen, setIsLoading } = useStatedata();
 
     const delay = async (dtime) => {
         await new Promise((resolve) => {
@@ -47,16 +47,21 @@ const TodoForm = () => {
         }
 
         setIsLoading(true);
-
         await delay(2000);
-
         if (editing) {
-            setTodos((prevTodos) => (
-                prevTodos.map((todo) =>
-                    todo.id === todoEdit.id ? { ...todo, todo: data.todo, desc: data.desc, deadline: date, editedAt: Date.now() } : todo
-                )
-            ))
-            setEditing(false);
+            try {
+                setTodos((prevTodos) => (
+                    prevTodos.map((todo) =>
+                        todo.id === todoEdit.id ? { ...todo, todo: data.todo, desc: data.desc, deadline: date, editedAt: Date.now() } : todo
+                    )
+                ))
+                const res = await axios.patch(`/api/todos/${todoEdit.id}`, { todo: data.todo, desc: data.desc, deadline: date });
+                console.log(res.data);
+                await refreshTodos();
+                setEditing(false);
+            } catch (error) {
+                console.log("Error occurred while updating the todo:", error);
+            }
         }
         else {
             try {
@@ -100,7 +105,17 @@ const TodoForm = () => {
         }
     }, [editing, setFocus]);
 
-    const [date, setDate] = useState(editing ? todoEdit.deadline : new Date());
+    const [date, setDate] = useState(editing && todoEdit.deadline
+        ? new Date(todoEdit.deadline)
+        : new Date());
+
+    useEffect(() => {
+        if (editing && todoEdit.deadline) {
+            setDate(new Date(todoEdit.deadline));
+        } else {
+            setDate(new Date());
+        }
+    }, [editing, todoEdit]);
 
     return (
         <>

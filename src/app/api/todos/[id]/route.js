@@ -20,3 +20,39 @@ export async function DELETE(request, {params}) {
         return NextResponse.json({error: (error).message || "Something went wrong"}, {status: 500})
     }
 }
+
+export async function PATCH(request, {params}) {
+    try {
+        const Params = await params
+        const id = Params.id
+        const {todo, desc, deadline, isDone} = await request.json()
+        let updatedTodo;
+        if(isDone === true) {
+            updatedTodo = await db.update(todoTable).set({
+                isDone,
+                completedAt: new Date(),
+                editedAt: new Date(),
+            }).where(eq(todoTable.id, id))
+        } else if(isDone === false) {
+            updatedTodo = await db.update(todoTable).set({
+                isDone,
+                completedAt: null,
+                editedAt: new Date(),
+            }).where(eq(todoTable.id, id))
+        } else {
+            updatedTodo = await db.update(todoTable).set({
+                todo,
+                desc,
+                deadline: new Date(deadline),
+                editedAt: new Date(),
+            }).where(eq(todoTable.id, id))
+        }
+        return NextResponse.json({updatedTodo}, {
+            status: 200,    
+            message: "Todo updated successfully"
+        })
+    } catch (error) {
+        console.log("Error in updating the todo: ", error);
+        return NextResponse.json({error: (error).message || "Something went wrong"}, {status: 500})
+    }
+}

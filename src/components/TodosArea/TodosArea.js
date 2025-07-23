@@ -6,8 +6,8 @@ import { CopyPlus } from 'lucide-react';
 import Loading from '../Loading/Loading';
 import { Button } from '../ui/button';
 import { Loader2 } from 'lucide-react';
-import useStatedata from '@/app/hooks/useStatedata';
-import useTodo from '@/app/hooks/useTodo';
+import useStatedata from '@/hooks/useStatedata';
+import useTodo from '@/hooks/useTodo';
 
 const TodosArea = () => {
 

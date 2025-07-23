@@ -7,6 +7,6 @@ export const todoTable = pgTable("todo", {
     isDone: boolean("isDone").notNull().default(false),
     deadline: timestamp("deadline").notNull(),
     addedAt: timestamp("addedAt").notNull().defaultNow(),
-    editedAt: timestamp("editedAt").notNull().defaultNow(),
+    editedAt: timestamp("editedAt"),
     completedAt: timestamp("completedAt"),
 })

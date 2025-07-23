@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const todos = await db.select().from(todoTable);
+        const todos = await db.select().from(todoTable).orderBy(todoTable.deadline);
         return NextResponse.json(todos);
     } catch (error) {
         console.log(error);
@@ -28,10 +28,6 @@ export async function POST(request) {
             status: 201,
             statusText: "Added Todo to the database"
         });
-        // return NextResponse.json({
-        //     message: "Todo added successfully"
-        // });
-        
     } catch (error) {
         console.log(error);
         return NextResponse.json(

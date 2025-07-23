@@ -5,13 +5,13 @@ import { Card } from "@/components/ui/card"
 import { differenceInCalendarDays } from "date-fns"
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogTitle, AlertDialogHeader, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog"
 import { HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import useStatedata from "@/app/hooks/useStatedata"
-import useTodo from "@/app/hooks/useTodo"
+import useStatedata from "@/hooks/useStatedata"
+import useTodo from "@/hooks/useTodo"
 import axios from "axios"
 
 const TodoCard = ({ item }) => {
 
-  const { isOpen, setIsOpen } = useStatedata();
+  const { isOpen, setIsOpen, setIsLoading } = useStatedata();
   const {
     setTodos,
     refreshTodos,
@@ -28,17 +28,24 @@ const TodoCard = ({ item }) => {
   }
 
   const completeTodo = async () => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) => {
-        if (todo.isDone) {
-          return todo.id === item.id ? { ...todo, isDone: !todo.isDone, completedAt: null } : todo
+    try {
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) => {
+          if (todo.isDone) {
+            return todo.id === item.id ? { ...todo, isDone: !todo.isDone, completedAt: null } : todo
+          }
+          else {
+            return todo.id === item.id ? { ...todo, isDone: !todo.isDone, completedAt: Date.now() } : todo
+          }
         }
-        else {
-          return todo.id === item.id ? { ...todo, isDone: !todo.isDone, completedAt: Date.now() } : todo
-        }
-      }
-      )
-    );
+        )
+      );
+      const res = axios.patch(`/api/todos/${item.id}`, { isDone: !item.isDone });
+      console.log(res.data);
+      
+    } catch (error) {
+      console.log("Error in completing the todo: ", error);
+    }
 
     // Displaying the toast when the task is not completed
     if (!item.isDone) {
@@ -72,7 +79,10 @@ const TodoCard = ({ item }) => {
           description: <h1 className="text-black font-semibold">{item.todo}</h1>,
         }),
       });
-      await refreshTodos();
+      
+      setIsLoading(true);
+      delay(2000);
+      await refreshTodos().finally(() => setIsLoading(false));
     } catch (error) {
       console.log("Error in deleting the todo: ", error);
       toast.promise(delay(0), {
