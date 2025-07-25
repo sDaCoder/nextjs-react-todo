@@ -9,6 +9,7 @@ import { Loader2 } from 'lucide-react';
 import useStatedata from '@/hooks/useStatedata';
 import useTodo from '@/hooks/useTodo';
 import { format, isSameDay } from 'date-fns';
+import SortnFilterArea from '../SortnFilterArea/SortnFilterArea';
 
 const TodosArea = () => {
 
@@ -24,16 +25,6 @@ const TodosArea = () => {
             setIsSmallScreen(window.innerWidth < 500);
         };
 
-        // const fetchTodos = async () => {
-        //     try {
-        //         const res = await axios.get("/api/todos");
-        //         setTodos(res.data);
-        //     } catch (error) {
-        //         console.log("Error occurred while fetching the todos:", error);
-        //     } finally {
-        //         setIsLoading(false);
-        //     }
-        // }
         refreshTodos().finally(() => setIsLoading(false));
 
         window.addEventListener("resize", handleResize);
@@ -59,6 +50,7 @@ const TodosArea = () => {
             <div className='max-w-4xl mx-auto'>
                 <h1 className="md:text-2xl text-xl font-extrabold mb-2">Tasks for {format(selectedDate, "EEEE, MMMM dd, yyyy")}</h1>
             </div>
+            <SortnFilterArea />
             <div className="flex items-center justify-center flex-wrap gap-4">
                 {isLoading ? <Loading /> :
                     selectedDateTodos?.map((todo, index) => (
