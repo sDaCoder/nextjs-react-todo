@@ -8,6 +8,8 @@ export const TodoContextProvider = ({ children }) => {
     const [todos, setTodos] = useState([]);
     const [editing, setEditing] = useState(false);
     const [todoEdit, setTodoEdit] = useState({});
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDateTodos, setSelectedDateTodos] = useState([]);
 
     const refreshTodos = async () => {
         try {
@@ -26,7 +28,11 @@ export const TodoContextProvider = ({ children }) => {
             editing,
             setEditing,
             todoEdit,
-            setTodoEdit
+            setTodoEdit,
+            selectedDate,
+            setSelectedDate,
+            selectedDateTodos,
+            setSelectedDateTodos
         }}>
             {children}
         </TodoContext.Provider>

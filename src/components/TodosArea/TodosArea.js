@@ -8,12 +8,13 @@ import { Button } from '../ui/button';
 import { Loader2 } from 'lucide-react';
 import useStatedata from '@/hooks/useStatedata';
 import useTodo from '@/hooks/useTodo';
+import { format, isSameDay } from 'date-fns';
 
 const TodosArea = () => {
 
     const [isClient, setIsClient] = useState(false);
     const { setIsSmallScreen, setIsOpen, isLoading, setIsLoading } = useStatedata();
-    const { todos, refreshTodos, setEditing } = useTodo();
+    const { todos, refreshTodos, setEditing, selectedDate, selectedDateTodos, setSelectedDateTodos } = useTodo();
 
     useEffect(() => {
         setIsLoading(true);
@@ -33,23 +34,34 @@ const TodosArea = () => {
         //         setIsLoading(false);
         //     }
         // }
-        setTimeout(() => {
-            // fetchTodos();
-            refreshTodos().finally(() => setIsLoading(false));
-        }, 2000);
+        refreshTodos().finally(() => setIsLoading(false));
 
         window.addEventListener("resize", handleResize);
         return () => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+
+    useEffect(() => {
+        // Filter todos whenever todos or selectedDate changes
+        const daysTasks = todos.filter((todo) => {
+            // Ensure todo.deadline is a Date object
+            const deadlineDate = new Date(todo.deadline);
+            return isSameDay(deadlineDate, selectedDate);
+        });
+        setSelectedDateTodos(daysTasks);
+    }, [todos, selectedDate]);
+
     if (!isClient) return null;
 
     return (
         <>
+            <div className='max-w-4xl mx-auto'>
+                <h1 className="md:text-2xl text-xl font-extrabold mb-2">Tasks for {format(selectedDate, "EEEE, MMMM dd, yyyy")}</h1>
+            </div>
             <div className="flex items-center justify-center flex-wrap gap-4">
                 {isLoading ? <Loading /> :
-                    todos?.map((todo, index) => (
+                    selectedDateTodos?.map((todo, index) => (
                         <HoverCard key={index}> <TodoCard item={todo} /> </HoverCard>
                     ))
                 }
@@ -58,7 +70,7 @@ const TodosArea = () => {
             <div className="flex flex-col items-center gap-6 py-4">
 
                 {/* If Todos don't exist and the page is not loading, show the image */}
-                {!todos.length && !isLoading && (
+                {!selectedDateTodos.length && !isLoading && (
                     <img src="/todo-man2.png" className="text-slate-500 w-1/2" />
                 )}
 

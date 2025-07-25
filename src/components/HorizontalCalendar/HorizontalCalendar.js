@@ -7,9 +7,14 @@ import { useState } from "react"
 import TimeBar from "@/components/TimeBar/TimeBar"
 import { useSwipeable } from "react-swipeable"
 import useStatedata from "@/hooks/useStatedata"
+import useTodo from "@/hooks/useTodo"
 
 const HorizontalCalendar = () => {
   const { isSmallScreen } = useStatedata();
+  const {
+    selectedDate,
+    setSelectedDate
+  } = useTodo();
   const [currentDate, setCurrentDate] = useState(new Date())
 
   const handleNextWeek = () => {
@@ -34,9 +39,9 @@ const HorizontalCalendar = () => {
   })
 
   return (
-    <>
+    <section className="sticky top-0 z-50">
       <TimeBar currentDate={currentDate} />
-      <div {...handlers} className="shadow-lg">
+      <div {...handlers} className="shadow-lg bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/75">
 
         <div className="flex items-center justify-center md:p-4 p-2 ">
           {!isSmallScreen &&
@@ -50,7 +55,9 @@ const HorizontalCalendar = () => {
               <div
                 key={index}
                 className={`flex flex-col items-center justify-center md:w-12 w-9 md:h-16 h-12 rounded-lg cursor-pointer transition-colors py-8 px-4 
-                ${isSameDay(date, new Date()) ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>
+                ${isSameDay(date, selectedDate) ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}
+                onClick={() => setSelectedDate(date)}
+              >
                 <span className="text-sm">{format(date, "EEE")}</span>
                 <span className="md:text-2xl text-md font-bold">{format(date, "d")}</span>
               </div>
@@ -63,8 +70,11 @@ const HorizontalCalendar = () => {
             </Button>
           }
         </div>
+        {isSmallScreen && (
+          <div className="text-center text-sm text-muted-foreground pb-2">Swipe left or right to navigate</div>
+        )}
       </div>
-    </>
+    </section>
   )
 }
 
