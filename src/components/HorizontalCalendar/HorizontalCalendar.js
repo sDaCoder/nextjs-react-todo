@@ -15,7 +15,8 @@ const HorizontalCalendar = () => {
     selectedDate,
     setSelectedDate
   } = useTodo();
-  const [currentDate, setCurrentDate] = useState(new Date())
+  const [currentDate, setCurrentDate] = useState(selectedDate);
+  // const [currentDate, setCurrentDate] = useState(new Date())
 
   const handleNextWeek = () => {
     setCurrentDate(addDays(currentDate, 7))
