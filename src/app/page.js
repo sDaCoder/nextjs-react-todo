@@ -1,17 +1,13 @@
-import HorizontalCalendar from "@/components/HorizontalCalendar/HorizontalCalendar";
-import TodosArea from "@/components/TodosArea/TodosArea";
-import TodoInput from "@/components/TodoInput/TodoInput";
-import BgDimmer from "@/components/BgDimmer/BgDimmer";
+import Link from 'next/link'
+import React from 'react'
 
-export default function Home() {
-  return (
-    <>
-      <HorizontalCalendar />
-      <div className="flex flex-col py-6 gap-8 items-center justify-center">
-        <TodosArea />
-        <TodoInput />
-        <BgDimmer />
-      </div>
-    </>
-  );
+const page = () => {
+    return (
+        <>
+            <h1>This is the home page</h1>
+            <Link className='text-blue-800 underline' href="/tasks">Navigate to tasks</Link>
+        </>
+    )
 }
+
+export default page
