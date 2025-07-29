@@ -5,8 +5,37 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
+import { signIn, signUp } from '../../../server/users'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import { Loader2Icon } from 'lucide-react'
 
 const LoginForm = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+
+    const loginSubmit = async (e) => {
+        setIsLoading(true);
+        const {success, message} = await signIn(email, password);
+        e.preventDefault();
+
+        if(success)
+        {
+            setEmail('');
+            setPassword('');
+            toast.success('Logged in successfully');
+            router.push('/dashboard');
+        }
+        else
+        {
+            toast.error(message);
+        }
+        setIsLoading(false);
+    }
+
     return (
         <>
             <Card>
@@ -24,6 +53,8 @@ const LoginForm = () => {
                                 <Input
                                     id="email"
                                     type="email"
+                                    value={email}
+                                    onChange={(e) => { setEmail(e.target.value); console.log(e.target.value) }}
                                     placeholder="m@example.com"
                                     required
                                 />
@@ -38,15 +69,22 @@ const LoginForm = () => {
                                         Forgot your password?
                                     </a>
                                 </div>
-                                <Input id="password" placeholder="**********" type="password" required />
+                                <Input
+                                    id="password" 
+                                    placeholder="**********" 
+                                    type="password" 
+                                    value={password}
+                                    onChange={(e) => { setPassword(e.target.value); console.log(e.target.value) }}
+                                    required
+                                />
                             </div>
                             <div className="flex flex-col gap-3">
-                                <Button type="submit" className="w-full">
-                                    Login
+                                <Button type="button" onClick={loginSubmit} className="w-full" disabled={isLoading}>
+                                    {isLoading ? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> : 'Login'}
                                 </Button>
-                                <Button variant="outline" className="w-full">
+                                {/* <Button variant="outline" className="w-full">
                                     Login with Google
-                                </Button>
+                                </Button> */}
                             </div>
                         </div>
                         <div className="mt-4 text-center text-sm">
