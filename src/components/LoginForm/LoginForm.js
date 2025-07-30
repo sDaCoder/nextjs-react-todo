@@ -5,10 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
-import { signIn, signUp } from '../../../server/users'
+import { signIn, signInGithub } from '../../../server/users'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { Loader2Icon } from 'lucide-react'
 
 const LoginForm = () => {
@@ -34,6 +34,13 @@ const LoginForm = () => {
             toast.error(message);
         }
         setIsLoading(false);
+    }
+
+    const handleLoginGithub = async () => {
+        setIsLoading(true);
+        await signInGithub();
+        setIsLoading(false);
+        redirect('/dashboard');
     }
 
     return (
@@ -82,8 +89,8 @@ const LoginForm = () => {
                                 <Button type="button" onClick={loginSubmit} className="w-full" disabled={isLoading}>
                                     {isLoading ? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> : 'Login'}
                                 </Button>
-                                {/* <Button variant="outline" className="w-full">
-                                    Login with Google
+                                {/* <Button type="button" variant="outline" className="w-full" onClick={handleLoginGithub}>
+                                    {isLoading ? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> : 'Login with Github'}
                                 </Button> */}
                             </div>
                         </div>

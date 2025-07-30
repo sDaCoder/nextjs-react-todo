@@ -1,5 +1,6 @@
 "use server";
 import { auth } from "../lib/auth"
+import { authClient } from "../lib/auth-client";
 
 export const signIn = async (email, password) => {
     try {
@@ -47,4 +48,17 @@ export const signUp = async (name, email, password) => {
         }
     }
 
+}
+
+export const signInGithub = async () => {
+    try {
+        await authClient.signIn.social({
+            provider: "github",
+            callbackURL: "http://localhost:3000/dashboard"
+        })
+        console.log("Signed in with Github");
+    } catch (error) {
+        console.log(error);
+    }
+    
 }

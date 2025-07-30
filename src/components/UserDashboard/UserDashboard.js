@@ -4,7 +4,7 @@ import { Button } from '../ui/button'
 import { LogOutIcon } from 'lucide-react'
 import { authClient } from '../../../lib/auth-client'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 
 const UserDashboard = () => {
     const router = useRouter();
@@ -18,6 +18,9 @@ const UserDashboard = () => {
             toast.error('Failed to log out')
         }
     }
+
+    
+    
     return (
         <>
             <Button variant="outline" onClick={handleSignOut}>
