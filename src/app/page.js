@@ -13,6 +13,7 @@ const page = () => {
 			<div className='flex items-center justify-start m-6 gap-4'>
 				<Button asChild><Link href="/login">Login</Link></Button>
 				<Button asChild><Link href="/signup">Signup</Link></Button>
+				{/* <DemoSendEmail /> */}
 			</div>
 		</>
 	)

@@ -6,6 +6,9 @@ export const todoTable = pgTable("todo", {
     desc: text("desc"),
     isDone: boolean("isDone").notNull().default(false),
     deadline: timestamp("deadline").notNull(),
+    userId: text("user_id")
+        .notNull()
+        .references(() => user.id, { onDelete: "cascade" }),
     addedAt: timestamp("addedAt").notNull().defaultNow(),
     editedAt: timestamp("editedAt"),
     completedAt: timestamp("completedAt"),
