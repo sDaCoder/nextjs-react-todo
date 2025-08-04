@@ -28,7 +28,7 @@ const SignupForm = () => {
             setEmail('');
             setPassword('');
             toast.success('Signed up successfully');
-            router.push('/dashboard');
+            router.push('/tasks');
         }
         else
         {

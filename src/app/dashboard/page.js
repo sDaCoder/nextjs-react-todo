@@ -16,9 +16,11 @@ const page = async () => {
     )
 
   return (
-    <div className='flex items-center justify-center h-[100vh]'>
-      <UserDashboard />
-    </div>
+    <>
+      <div className='p-20'>
+        <UserDashboard />
+      </div>
+    </>
   )
 }
 

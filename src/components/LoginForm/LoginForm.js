@@ -27,7 +27,7 @@ const LoginForm = () => {
             setEmail('');
             setPassword('');
             toast.success('Logged in successfully');
-            router.push('/dashboard');
+            router.push('/tasks');
         }
         else
         {

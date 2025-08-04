@@ -50,15 +50,15 @@ export const signUp = async (name, email, password) => {
 
 }
 
-export const signInGithub = async () => {
-    try {
-        await authClient.signIn.social({
-            provider: "github",
-            callbackURL: "http://localhost:3000/dashboard"
-        })
-        console.log("Signed in with Github");
-    } catch (error) {
-        console.log(error);
-    }
+// export const signInGithub = async () => {
+//     try {
+//         await authClient.signIn.social({
+//             provider: "github",
+//             callbackURL: "http://localhost:3000/dashboard"
+//         })
+//         console.log("Signed in with Github");
+//     } catch (error) {
+//         console.log(error);
+//     }
     
-}
+// }
