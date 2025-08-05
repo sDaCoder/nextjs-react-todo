@@ -17,9 +17,9 @@ const page = async () => {
 
   return (
     <>
-      <div className='p-20'>
+      {/* <div className='p-20'> */}
         <UserDashboard />
-      </div>
+      {/* </div> */}
     </>
   )
 }

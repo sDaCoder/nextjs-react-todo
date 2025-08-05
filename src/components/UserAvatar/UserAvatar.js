@@ -176,17 +176,17 @@ const UserAvatar = () => {
                             <div className="flex flex-col gap-2">
                                 {pathname === '/dashboard' ? (
                                     <Button variant="default" onClick={handleNavigateToTasks} className="w-full h-8 text-xs">
-                                        <CheckSquare className="h-3 w-3 mr-2" />
+                                        <CheckSquare className="h-3 w-3" />
                                         Go to Tasks
                                     </Button>
                                 ) : (
                                     <Button variant="default" onClick={handleNavigateToDashboard} className="w-full h-8 text-xs">
-                                        <ArrowLeft className="h-3 w-3 mr-2" />
+                                        <ArrowLeft className="h-3 w-3" />
                                         Back to Dashboard
                                     </Button>
                                 )}
                                 <Button variant="outline" onClick={handleSignOut} className="w-full h-8 text-xs">
-                                    <LogOutIcon className="h-3 w-3 mr-2" />
+                                    <LogOutIcon className="h-3 w-3" />
                                     Sign Out
                                 </Button>
                             </div>
