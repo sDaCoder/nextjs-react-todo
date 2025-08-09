@@ -9,12 +9,18 @@ import { Loader2 } from 'lucide-react';
 import useStatedata from '@/hooks/useStatedata';
 import useTodo from '@/hooks/useTodo';
 import { format, isSameDay } from 'date-fns';
+import SortnFilterArea from '../SortnFilterArea/SortnFilterArea';
+import useSortnFilter from '@/hooks/useSortnFilter';
 
 const TodosArea = () => {
 
     const [isClient, setIsClient] = useState(false);
     const { setIsSmallScreen, setIsOpen, isLoading, setIsLoading } = useStatedata();
     const { todos, refreshTodos, setEditing, selectedDate, selectedDateTodos, setSelectedDateTodos } = useTodo();
+    const {
+        sortOption,
+        filterOption
+    } = useSortnFilter();
 
     useEffect(() => {
         setIsLoading(true);
@@ -24,16 +30,6 @@ const TodosArea = () => {
             setIsSmallScreen(window.innerWidth < 500);
         };
 
-        // const fetchTodos = async () => {
-        //     try {
-        //         const res = await axios.get("/api/todos");
-        //         setTodos(res.data);
-        //     } catch (error) {
-        //         console.log("Error occurred while fetching the todos:", error);
-        //     } finally {
-        //         setIsLoading(false);
-        //     }
-        // }
         refreshTodos().finally(() => setIsLoading(false));
 
         window.addEventListener("resize", handleResize);
@@ -43,14 +39,59 @@ const TodosArea = () => {
     }, []);
 
     useEffect(() => {
-        // Filter todos whenever todos or selectedDate changes
-        const daysTasks = todos.filter((todo) => {
-            // Ensure todo.deadline is a Date object
-            const deadlineDate = new Date(todo.deadline);
-            return isSameDay(deadlineDate, selectedDate);
-        });
-        setSelectedDateTodos(daysTasks);
-    }, [todos, selectedDate]);
+        const getSortedTodos = async () => {
+            // Filter todos whenever todos or selectedDate changes
+            let filtered = todos.filter((todo) => {
+                const deadlineDate = new Date(todo.deadline);
+                return isSameDay(deadlineDate, selectedDate);
+            });
+    
+            // Sort after filtering
+            switch (sortOption) {
+                case "task name":
+                    filtered.sort((a, b) => a.todo.localeCompare(b.todo));
+                    break;
+                case "date added latest":
+                    filtered.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
+                    break;
+                case "date added oldest":
+                    filtered.sort((a, b) => new Date(a.addedAt) - new Date(b.addedAt));
+                    break;
+                case "deadline soonest":
+                    filtered.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+                    break;
+                case "deadline latest":
+                    filtered.sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
+                    break;
+            }
+
+            switch (filterOption) {
+                case "all":
+                    break;
+
+                case "completed":
+                    filtered = filtered.filter((todo) => todo.isDone);
+                    break;
+
+                case "Unaccomplished":
+                    filtered = filtered.filter((todo) => !todo.isDone);
+                    break;
+
+                case "Deadline exceeded":
+                    filtered = filtered.filter((todo) => {
+                        const deadlineDate = new Date(todo.deadline);
+                        return deadlineDate < new Date();
+                    });
+                    break;
+            
+                default:
+                    break;
+            }
+
+            setSelectedDateTodos(filtered);
+        }
+        getSortedTodos();
+    }, [todos, selectedDate, sortOption, filterOption]);
 
     if (!isClient) return null;
 
@@ -59,6 +100,7 @@ const TodosArea = () => {
             <div className='max-w-4xl mx-auto'>
                 <h1 className="md:text-2xl text-xl font-extrabold mb-2">Tasks for {format(selectedDate, "EEEE, MMMM dd, yyyy")}</h1>
             </div>
+            <SortnFilterArea />
             <div className="flex items-center justify-center flex-wrap gap-4">
                 {isLoading ? <Loading /> :
                     selectedDateTodos?.map((todo, index) => (
