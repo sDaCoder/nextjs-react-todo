@@ -1,6 +1,4 @@
 "use client"
-
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -10,6 +8,7 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { redirect, useRouter } from 'next/navigation'
 import { Loader2Icon } from 'lucide-react'
+import { RainbowButton } from '../magicui/rainbow-button'
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -45,7 +44,7 @@ const LoginForm = () => {
 
     return (
         <>
-            <Card>
+            <Card className='z-[+1] shadow-lg'>
                 <CardHeader>
                     <CardTitle>Login to your account</CardTitle>
                     <CardDescription>
@@ -86,9 +85,9 @@ const LoginForm = () => {
                                 />
                             </div>
                             <div className="flex flex-col gap-3">
-                                <Button type="button" onClick={loginSubmit} className="w-full" disabled={isLoading}>
+                                <RainbowButton type="button" onClick={loginSubmit} className="w-full" disabled={isLoading}>
                                     {isLoading ? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> : 'Login'}
-                                </Button>
+                                </RainbowButton>
                                 {/* <Button type="button" variant="outline" className="w-full" onClick={handleLoginGithub}>
                                     {isLoading ? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> : 'Login with Github'}
                                 </Button> */}

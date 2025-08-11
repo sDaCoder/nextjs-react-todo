@@ -2,8 +2,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { StateContextProvider } from "../context/stateContext";
-import { TodoContext, TodoContextProvider } from "../context/TodoContext";
+import { TodoContextProvider } from "../context/TodoContext";
 import { SortnFilterContextProvider } from "@/context/SortnFilterContext";
+import { NavbarDemo } from "@/components/Navbar/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         <TodoContextProvider>
           <StateContextProvider>
             <SortnFilterContextProvider>
+              <NavbarDemo />
               {children}
               <Toaster />
             </SortnFilterContextProvider>

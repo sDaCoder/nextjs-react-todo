@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
-import { Button } from '../ui/button'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { signUp } from '../../../server/users'
 import { Loader2Icon } from 'lucide-react'
 import { toast } from 'sonner'
+import { RainbowButton } from '../magicui/rainbow-button'
 
 const SignupForm = () => {
     const [name, setName] = useState('')
@@ -39,7 +39,7 @@ const SignupForm = () => {
 
     return (
         <>
-            <Card>
+            <Card className='z-[+1] shadow-lg'>
                 <CardHeader>
                     <CardTitle>Create a new account</CardTitle>
                     <CardDescription>
@@ -85,14 +85,14 @@ const SignupForm = () => {
                                 />
                             </div>
                             <div className="flex flex-col gap-3">
-                                <Button 
+                                <RainbowButton 
                                     type="button" 
                                     className="w-full"
                                     onClick={signupSubmit}
                                     disabled={isLoading}
                                 >
                                     {isLoading ? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> : 'Sign Up'}
-                                </Button>
+                                </RainbowButton>
                                 {/* <Button variant="outline" className="w-full">
                                     Sign up with Google
                                 </Button> */}
