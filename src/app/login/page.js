@@ -19,7 +19,7 @@ const page = async () => {
             {/* <div className='h-[100vh] w-full flex items-center justify-center'>
                 <LoginForm />
             </div> */}
-            <BackgroundLines className="flex items-center justify-center h-[calc(100vh-6rem)] w-full flex-col px-4">
+            <BackgroundLines className="flex items-center justify-center h-screen w-full flex-col px-4">
                 <LoginForm />
             </BackgroundLines>
         </>

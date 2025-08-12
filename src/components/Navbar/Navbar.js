@@ -41,7 +41,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 
-export function NavbarDemo() {
+export default function NavbarDemo() {
 
     const pathname = usePathname()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

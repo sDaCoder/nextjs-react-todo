@@ -4,7 +4,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { StateContextProvider } from "../context/stateContext";
 import { TodoContextProvider } from "../context/TodoContext";
 import { SortnFilterContextProvider } from "@/context/SortnFilterContext";
-import { NavbarDemo } from "@/components/Navbar/Navbar";
+import NavbarDemo from "@/components/Navbar/Navbar";
+import Footer from "@/components/Footer/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
             <SortnFilterContextProvider>
               <NavbarDemo />
               {children}
+              <Footer />
               <Toaster />
             </SortnFilterContextProvider>
           </StateContextProvider>

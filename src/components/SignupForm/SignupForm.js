@@ -39,7 +39,7 @@ const SignupForm = () => {
 
     return (
         <>
-            <Card className='z-[+1] shadow-lg'>
+            <Card className='z-[+1] shadow-lg bg-background/70 backdrop-blur-[4px] supports-[backdrop-filter]:bg-background/75'>
                 <CardHeader>
                     <CardTitle>Create a new account</CardTitle>
                     <CardDescription>
