@@ -16,6 +16,7 @@ import { Calendar } from 'lucide-react';
 import { CheckSquare } from 'lucide-react';
 import { LogOutIcon } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 const UserAvatar = () => {
     const router = useRouter();
