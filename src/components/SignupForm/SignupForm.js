@@ -9,6 +9,7 @@ import { signUp } from '../../../server/users'
 import { Loader2Icon } from 'lucide-react'
 import { toast } from 'sonner'
 import { RainbowButton } from '../magicui/rainbow-button'
+import { BrandLogo } from '../Navbar/Navbar'
 
 const SignupForm = () => {
     const [name, setName] = useState('')
@@ -41,6 +42,7 @@ const SignupForm = () => {
         <>
             <Card className='z-[+1] shadow-lg bg-background/70 backdrop-blur-[4px] supports-[backdrop-filter]:bg-background/75'>
                 <CardHeader>
+                    <BrandLogo className='flex-col py-4'/>
                     <CardTitle>Create a new account</CardTitle>
                     <CardDescription>
                         Please fill up the form to create a new account

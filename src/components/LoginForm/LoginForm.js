@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { redirect, useRouter } from 'next/navigation'
 import { Loader2Icon } from 'lucide-react'
 import { RainbowButton } from '../magicui/rainbow-button'
+import { BrandLogo } from '../Navbar/Navbar'
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -46,6 +47,7 @@ const LoginForm = () => {
         <>
             <Card className='z-[+1] shadow-lg bg-background/70 backdrop-blur-[4px] supports-[backdrop-filter]:bg-background/75'>
                 <CardHeader>
+                    <BrandLogo className='flex-col py-4'/>
                     <CardTitle>Login to your account</CardTitle>
                     <CardDescription>
                         Enter your email below to login to your account

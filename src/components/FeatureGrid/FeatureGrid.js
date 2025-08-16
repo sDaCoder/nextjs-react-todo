@@ -11,7 +11,7 @@ const FeatureGrid = () => {
         <>
             <h2 className="text-center text-3xl md:text-5xl lg:text-7xl font-sans py-2 md:py-10 my-4 relative z-20 font-extrabold tracking-tight">
                 <Highlighter padding={10} action='underline' color='#525252'>
-                    <span className="bg-clip-text text-transparent bg-gradient-to-b from-neutral-900 to-neutral-200 dark:from-neutral-600 dark:to-white">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-b from-neutral-900 to-neutral-200 dark:from-neutral-600 dark:to-white select-none">
                         Our Features
                     </span>
                 </Highlighter>
@@ -24,7 +24,7 @@ const FeatureGrid = () => {
                         description={item.description}
                         header={item.header}
                         icon={item.icon}
-                        className={i === 3 || i === 6 ? "md:col-span-2" : ""}
+                        className={i === 3 || i === 6 ? "md:col-span-2 select-none" : "select-none"}
                     />
                 ))}
             </BentoGrid>
@@ -41,6 +41,7 @@ const gridFeatures = [
         // header: <Skeleton className="h-full w-full" />,
         header: (
             <Image
+                draggable={false}
                 src='/feature1.jpg'
                 alt='feature1'
                 fill
@@ -57,6 +58,7 @@ const gridFeatures = [
         description: "Never miss important deadlines with intelligent date management.",
         header: (
             <Image
+                draggable={false}
                 src='/feature2.jpg'
                 alt='feature2'
                 fill
@@ -73,6 +75,7 @@ const gridFeatures = [
         description: "Your tasks are private and secure with personal user authentication.",
         header: (
             <Image
+                draggable={false}
                 src='/feature3.jpg'
                 alt='feature3'
                 fill

@@ -36,6 +36,7 @@ import {
     MobileNavToggle,
     MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
+import { cn } from "@/lib/utils";
 import { Calendar1Icon } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -46,21 +47,21 @@ export default function NavbarDemo() {
     const pathname = usePathname()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const router = useRouter()
-    
-    
-    if(pathname === "/tasks" || pathname === "/dashboard") {
+
+
+    if (pathname === "/tasks" || pathname === "/dashboard") {
         return null
     }
-    
+
     const navItems = [
         {
             name: "Home",
             link: "/",
         },
-        {
-            name: "About Us",
-            link: "/about",
-        },
+        // {
+        //     name: "About Us",
+        //     link: "/about",
+        // },
         {
             name: "Contact Us",
             link: "/contact",
@@ -73,7 +74,10 @@ export default function NavbarDemo() {
                 {/* Desktop Navigation */}
                 <NavBody>
                     {/* <NavbarLogo /> */}
-                    <Calendar1Icon className="h-6 w-6 text-blue-600" />
+                    {/* <Calendar1Icon className="h-6 w-6 text-blue-600" /> */}
+                    <Link href="/">
+                        <BrandLogo />
+                    </Link>
                     <NavItems items={navItems} />
                     <div className="flex items-center gap-4">
                         <NavbarButton variant="secondary" onClick={() => {
@@ -110,13 +114,13 @@ export default function NavbarDemo() {
                         ))}
                         <div className="flex w-full flex-col gap-4">
                             <NavbarButton
-                                onClick={() => {setIsMobileMenuOpen(false); router.push("/login")}}
+                                onClick={() => { setIsMobileMenuOpen(false); router.push("/login") }}
                                 variant="primary"
                                 className="w-full">
                                 Login
                             </NavbarButton>
                             <NavbarButton
-                                onClick={() => {setIsMobileMenuOpen(false); router.push("/signup")}}
+                                onClick={() => { setIsMobileMenuOpen(false); router.push("/signup") }}
                                 variant="primary"
                                 className="w-full">
                                 Register
@@ -128,4 +132,17 @@ export default function NavbarDemo() {
             {/* Navbar */}
         </div>
     );
+}
+
+export const BrandLogo = ({
+    className = ""
+}) => {
+    return (
+        <>
+            <div className={cn("flex items-center gap-2", className)}>
+                <Calendar1Icon className="h-6 w-6" stroke="black" strokeWidth={3} />
+                <h1 className="text-xl font-bold tracking-tight">TaskMachinà</h1>
+            </div>
+        </>
+    )
 }
