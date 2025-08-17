@@ -19,13 +19,13 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
-  applicationName: "Taskmachina",
+  applicationName: "TaskMachinà",
   title: {
-    default: "Taskmachina — Smart Todo & Task Manager",
-    template: "%s | Taskmachina",
+    default: "TaskMachinà — Smart Todo & Task Manager",
+    template: "%s | TaskMachinà",
   },
   description:
-    "Taskmachina is a fast, modern, privacy-first todo and task manager. Capture tasks, add deadlines, sort and filter effortlessly, and ship more—on web and mobile.",
+    "TaskMachinà is a fast, modern, privacy-first todo and task manager. Capture tasks, add deadlines, sort and filter effortlessly, and ship more—on web and mobile.",
   keywords: [
     "todo app",
     "task manager",
@@ -35,11 +35,12 @@ export const metadata = {
     "projects",
     "deadline tracking",
     "task prioritization",
-    "Taskmachina",
+    "TaskMachina",
+    "TaskMachinà",
   ],
-  authors: [{ name: "Taskmachina" }],
-  creator: "Taskmachina",
-  publisher: "Taskmachina",
+  authors: [{ name: "TaskMachinà" }],
+  creator: "TaskMachinà",
+  publisher: "TaskMachinà",
   category: "Productivity",
   alternates: {
     canonical: "/",
@@ -47,27 +48,27 @@ export const metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    title: "Taskmachina — Smart Todo & Task Manager",
+    title: "TaskMachinà — Smart Todo & Task Manager",
     description:
-      "Plan, prioritize, and complete tasks faster with Taskmachina. Powerful sorting, filtering, and deadlines that keep you on track.",
-    siteName: "Taskmachina",
+      "Plan, prioritize, and complete tasks faster with TaskMachinà. Powerful sorting, filtering, and deadlines that keep you on track.",
+    siteName: "TaskMachinà",
     images: [
       {
         url: "/feature1.jpg",
         width: 1200,
         height: 630,
-        alt: "Taskmachina dashboard preview",
+        alt: "TaskMachinà dashboard preview",
       },
     ],
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Taskmachina — Smart Todo & Task Manager",
+    title: "TaskMachinà — Smart Todo & Task Manager",
     description:
       "Your all-in-one todo manager with blazing-fast UX, deadlines, and advanced filters.",
     images: ["/feature1.jpg"],
-    creator: "@taskmachina",
+    creator: "@TaskMachinà",
   },
   robots: {
     index: true,
@@ -85,11 +86,11 @@ export const metadata = {
     icon: "/calendar-logo.svg",
     apple: "/calendar-logo.svg",
   },
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b0b0f" },
-  ],
-  colorScheme: "light dark",
+  // themeColor: [
+  //   { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+  //   { media: "(prefers-color-scheme: dark)", color: "#0b0b0f" },
+  // ],
+  // colorScheme: "light dark",
   viewport: {
     width: "device-width",
     initialScale: 1,

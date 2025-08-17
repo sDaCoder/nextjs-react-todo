@@ -17,7 +17,7 @@ const DeviceMocks = () => {
             <div className="flex flex-col md:flex-row items-center justify-center w-full px-4 gap-8">
                 {/* Safari Browser Mockup - Responsive Container */}
                 <ResponsiveSafari
-                    url="https://task-machine-nextjs.vercel.app/tasks"
+                    url="https://task-machine-nextjs.vercel.app"
                     imageSrc={'/safari-mockup.png'}
                     maxWidth="800px"
                     className="w-full px-8"
@@ -25,7 +25,7 @@ const DeviceMocks = () => {
                 
                 {/* iPhone Mockup - Responsive Container */}
                 <ResponsiveIphone
-                    src={'/iphone-mockup3.png'}
+                    src={'/iphone-mockup4.jpeg'}
                     maxWidth="250px"
                     className="w-full md:w-auto"
                 />
