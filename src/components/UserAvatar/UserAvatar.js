@@ -17,6 +17,7 @@ import { CheckSquare } from 'lucide-react';
 import { LogOutIcon } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import { Shield } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 
 const UserAvatar = () => {
     const router = useRouter();
@@ -118,12 +119,17 @@ const UserAvatar = () => {
                         <CardContent className="space-y-3 pt-0 px-3 pb-3">
                             {/* User Avatar and Basic Info */}
                             <div className="flex items-center space-x-3">
-                                <Avatar className="h-12 w-12">
-                                    <AvatarImage src={user.image} alt={user.name || user.email} />
-                                    <AvatarFallback className="text-sm font-semibold">
-                                        {userInitials}
-                                    </AvatarFallback>
-                                </Avatar>
+                                <Button variant="ghost" className="relative group h-12 w-12 cursor-pointer rounded-full hover:shadow-lg transition-all duration-300" size="icon">
+                                    <Avatar className="h-12 w-12 cursor-pointer">
+                                        <AvatarImage src={user.image} alt={user.name || user.email} />
+                                        <AvatarFallback className="text-sm font-semibold">
+                                            {userInitials}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <span className='absolute inset-0 flex items-center justify-center bg-black/40 border-2 border-black rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
+                                        <Pencil />
+                                    </span>
+                                </Button>
                                 <div className="space-y-1 flex-1 min-w-0">
                                     <h3 className="text-sm font-semibold truncate">
                                         {user.name || 'User'}
@@ -141,7 +147,7 @@ const UserAvatar = () => {
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs font-medium text-gray-700">User ID</span>
-                                    <Badge variant="secondary" className="font-mono text-xs">
+                                    <Badge variant="secondary" className="font-mono text-xs hover:cursor-pointer select-none">
                                         {user.id.slice(0, 8)}...
                                     </Badge>
                                 </div>

@@ -1,6 +1,9 @@
 "use server";
 import { auth } from "../lib/auth"
 import { authClient } from "../lib/auth-client";
+import { db } from "../src/db/drizzle";
+import { user as userTable } from "../src/db/schema";
+import { eq } from "drizzle-orm";
 
 export const signIn = async (email, password) => {
     try {
@@ -25,7 +28,7 @@ export const signIn = async (email, password) => {
     }
 }
 
-export const signUp = async (name, email, password) => {
+export const signUp = async (name, email, password, imageUrl) => {
     try {
         await auth.api.signUpEmail({
             body: {
@@ -37,6 +40,12 @@ export const signUp = async (name, email, password) => {
                 name
             }
         })
+        // If an image URL is provided, store it on the user record.
+        if (imageUrl) {
+            await db.update(userTable)
+                .set({ image: imageUrl })
+                .where(eq(userTable.email, email));
+        }
         return {
             success: true,
             message: "Signed up successfully"

@@ -15,19 +15,56 @@ const SignupForm = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
+    const uploadImageIfAny = async () => {
+        if (!imageFile) return undefined;
+        // Cloudinary unsigned upload
+        // Requires env: NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME and NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+        if (!cloudName || !uploadPreset) {
+            toast.error('Image upload not configured. Missing Cloudinary env vars.');
+            return undefined;
+        }
+        const formData = new FormData();
+        formData.append('file', imageFile);
+        formData.append('upload_preset', uploadPreset);
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+            method: 'POST',
+            body: formData,
+        });
+        if (!res.ok) {
+            const errText = await res.text();
+            throw new Error(errText || 'Image upload failed');
+        }
+        const data = await res.json();
+        return data.secure_url;
+    }
+
     const signupSubmit = async (e) => {
-        setIsLoading(true);
-        const {success, message} = await signUp(name, email, password);
         e.preventDefault();
+        setIsLoading(true);
+        let imageUrl;
+        try {
+            imageUrl = await uploadImageIfAny();
+        } catch (err) {
+            toast.error('Failed to upload image');
+            setIsLoading(false);
+            return;
+        }
+        const {success, message} = await signUp(name, email, password, imageUrl);
 
         if(success)
         {
             setName('');
             setEmail('');
             setPassword('');
+            setImageFile(null);
+            setImagePreview('');
             toast.success('Signed up successfully');
             router.push('/tasks');
         }
@@ -49,7 +86,7 @@ const SignupForm = () => {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form>
+                    <form onSubmit={signupSubmit}>
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-3">
                                 <Label htmlFor="name">Name</Label>
@@ -86,11 +123,28 @@ const SignupForm = () => {
                                     required 
                                 />
                             </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="avatar">Profile image (optional)</Label>
+                                <Input 
+                                    id="avatar"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        setImageFile(file || null);
+                                        if (file) setImagePreview(URL.createObjectURL(file));
+                                        else setImagePreview('');
+                                    }}
+                                />
+                                {imagePreview && (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img src={imagePreview} alt="Selected avatar preview" className="h-20 w-20 rounded-full object-cover border" />
+                                )}
+                            </div>
                             <div className="flex flex-col gap-3">
                                 <RainbowButton 
-                                    type="button" 
+                                    type="submit" 
                                     className="w-full"
-                                    onClick={signupSubmit}
                                     disabled={isLoading}
                                 >
                                     {isLoading ? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> : 'Sign Up'}
