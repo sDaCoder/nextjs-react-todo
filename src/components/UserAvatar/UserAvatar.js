@@ -17,7 +17,8 @@ import { CheckSquare } from 'lucide-react';
 import { LogOutIcon } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import { Shield } from 'lucide-react';
-import { Pencil } from 'lucide-react';
+import UserProfileImage from '../UserProfileImage/UserProfileImage';
+
 
 const UserAvatar = () => {
     const router = useRouter();
@@ -119,17 +120,7 @@ const UserAvatar = () => {
                         <CardContent className="space-y-3 pt-0 px-3 pb-3">
                             {/* User Avatar and Basic Info */}
                             <div className="flex items-center space-x-3">
-                                <Button variant="ghost" className="relative group h-12 w-12 cursor-pointer rounded-full hover:shadow-lg transition-all duration-300" size="icon">
-                                    <Avatar className="h-12 w-12 cursor-pointer">
-                                        <AvatarImage src={user.image} alt={user.name || user.email} />
-                                        <AvatarFallback className="text-sm font-semibold">
-                                            {userInitials}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                    <span className='absolute inset-0 flex items-center justify-center bg-black/40 border-2 border-black rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
-                                        <Pencil />
-                                    </span>
-                                </Button>
+                                <UserProfileImage />
                                 <div className="space-y-1 flex-1 min-w-0">
                                     <h3 className="text-sm font-semibold truncate">
                                         {user.name || 'User'}
