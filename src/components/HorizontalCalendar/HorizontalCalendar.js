@@ -3,7 +3,7 @@ import { ChevronLeft } from "lucide-react"
 import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { addDays, format, isSameDay, startOfWeek } from "date-fns"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import TimeBar from "@/components/TimeBar/TimeBar"
 import { useSwipeable } from "react-swipeable"
 import useStatedata from "@/hooks/useStatedata"
@@ -17,6 +17,10 @@ const HorizontalCalendar = () => {
   } = useTodo();
   const [currentDate, setCurrentDate] = useState(selectedDate);
   // const [currentDate, setCurrentDate] = useState(new Date())
+
+  useEffect(() => {
+    setCurrentDate(selectedDate)
+  }, [selectedDate])
 
   const handleNextWeek = () => {
     setCurrentDate(addDays(currentDate, 7))

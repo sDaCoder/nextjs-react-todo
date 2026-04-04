@@ -2,6 +2,7 @@ import HorizontalCalendar from "@/components/HorizontalCalendar/HorizontalCalend
 import TodosArea from "@/components/TodosArea/TodosArea";
 import TodoInput from "@/components/TodoInput/TodoInput";
 import BgDimmer from "@/components/BgDimmer/BgDimmer";
+import GoToTodayButton from "@/components/GoToTodayButton/GoToTodayButton";
 import { headers } from "next/headers";
 import React from "react";
 import { auth } from "../../../lib/auth";
@@ -25,6 +26,9 @@ export default async function Home() {
   return (
     <>
       <HorizontalCalendar />
+      <div className="flex justify-center pt-4">
+        <GoToTodayButton />
+      </div>
       <div className="flex flex-col py-6 gap-8 items-center justify-center">
         <TodosArea />
         <TodoInput />
