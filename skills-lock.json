@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "nodemailer": {
+      "source": "aidotnet/moyucode",
+      "sourceType": "github",
+      "computedHash": "c9a8c08c0fa6ab15d6331e5346e33768a83b5e337d1160c620f87893122061a6"
+    },
+    "react-email": {
+      "source": "resend/react-email",
+      "sourceType": "github",
+      "computedHash": "9b8a308f7c8d5df05b0cf00e45348bffbd427d78dee3eef0b898e4b3da3e56d1"
+    }
+  }
+}
